@@ -10,7 +10,7 @@ test('Check For correct functionallity', async () => {
             errors: ["tripType"],
         }}
         optionName="tripType"
-        arr={["Round Trip", "One way"]}
+        options={["Round Trip", "One way"]}
     />,
     )
     await userEvent.click(screen.getByTestId("tripType"))

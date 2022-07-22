@@ -1,7 +1,7 @@
 import { FormControl, Select, MenuItem, Alert } from '@mui/material';
 
-export default function roundSelect({formik, optionName, arr}:
-    {formik: any, optionName: string, arr: string[] | number[],
+export default function roundSelect({formik, optionName, options}:
+    {formik: any, optionName: string, options: string[] | number[],
     }
     ){
     return(
@@ -14,7 +14,7 @@ export default function roundSelect({formik, optionName, arr}:
                 onBlur={formik.onBlur}
                 style={{borderRadius: "30px", height: "35px"}}
             >
-                {arr.map((item) => <MenuItem key={item} value={item}>{item}</MenuItem>)}
+                {options.map((item) => <MenuItem key={item} value={item}>{item}</MenuItem>)}
             </Select>
             {formik.errors[optionName] && formik.touched[optionName] ? 
               <Alert severity="error" style={{marginTop: "20px"}}>

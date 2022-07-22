@@ -34,7 +34,7 @@ function HomePage() {
               <RoundSelect
                 formik={formik}
                 optionName="tripType"
-                arr={["Round Trip", "One Way"]}
+                options={["Round Trip", "One Way"]}
               />
             </Grid>
             <Grid item xs={6} md={2}>
