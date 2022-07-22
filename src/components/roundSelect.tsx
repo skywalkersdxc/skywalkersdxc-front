@@ -7,6 +7,7 @@ export default function roundSelect({formik, optionName, arr}:
     return(
         <FormControl fullWidth>
             <Select
+                data-testid={optionName}
                 name={optionName}
                 value={formik.values[optionName]}
                 onChange={formik.handleChange}
