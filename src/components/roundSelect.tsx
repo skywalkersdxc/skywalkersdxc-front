@@ -1,4 +1,5 @@
 import { FormControl, Select, MenuItem, Alert } from '@mui/material';
+import homePageStyles from  "../pages/HomePage/HomePage.module.css"
 
 export default function roundSelect({formik, optionName, options}:
     {formik: any, optionName: string, options: string[] | number[],
@@ -12,12 +13,12 @@ export default function roundSelect({formik, optionName, options}:
                 value={formik.values[optionName]}
                 onChange={formik.handleChange}
                 onBlur={formik.onBlur}
-                style={{borderRadius: "30px", height: "35px"}}
+                className={homePageStyles.roundSelect}
             >
                 {options.map((item) => <MenuItem key={item} value={item}>{item}</MenuItem>)}
             </Select>
             {formik.errors[optionName] && formik.touched[optionName] ? 
-              <Alert severity="error" style={{marginTop: "20px"}}>
+            <Alert severity="error" className={homePageStyles.alertErrors}>
                 {formik.errors[optionName]}
             </Alert> 
             : null}
