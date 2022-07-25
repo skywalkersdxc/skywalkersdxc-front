@@ -4,6 +4,7 @@ import RoundedSelect from "../../components/roundedSelect"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { StyledEngineProvider } from '@mui/material/styles';
+import constants from "../../utils/constants"
 
 function HomePage() {
   const formik = useFormik({
@@ -11,7 +12,7 @@ function HomePage() {
       tripType: Yup.string().required("Trip type is required!")
     }),
     initialValues: {
-      tripType: 'Round Trip'
+      tripType: constants.trypType.round
     },
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
@@ -36,7 +37,7 @@ function HomePage() {
                 <RoundedSelect
                   formik={formik}
                   optionName="tripType"
-                  options={["Round Trip", "One Way"]}
+                  options={[constants.trypType.round, constants.trypType.oneWay]}
                 />
               </Grid>
               <Grid item xs={6} md={2}>
