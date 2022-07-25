@@ -17,3 +17,20 @@ test('Check For correct functionallity', async () => {
     await userEvent.click(screen.getByTestId("tripType"))
     expect(screen.getByTestId("tripType")).toBeInTheDocument()
 })
+
+test('Check for Error Message', async () => {
+    render(    
+    <RoundedSelect 
+        formik={{
+            values: ["tripType"],
+            errors: {tripType: 'Trip type is required!'},
+            touched: {tripType: true},
+        }}
+        optionName="tripType"
+        options={[]}
+    />,
+    )
+    await userEvent.click(screen.getByTestId("tripType"))
+    expect(screen.getByRole("alert")).toBeInTheDocument()
+    expect(screen.getByRole("alert")).toHaveTextContent("Trip type is required!")
+})
