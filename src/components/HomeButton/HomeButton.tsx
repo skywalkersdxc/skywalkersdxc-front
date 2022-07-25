@@ -16,7 +16,13 @@ const HomeButton: React.FC<HomeButtonProps> = ({ isHomePage }) => {
     navigate("/");
   };
 
-  return <Home className={homeButtonStyles.icon} onClick={handleHomeButton} />;
+  return (
+    <Home
+      data-testid="home-button"
+      className={homeButtonStyles.icon}
+      onClick={handleHomeButton}
+    />
+  );
 };
 
 export default HomeButton;
