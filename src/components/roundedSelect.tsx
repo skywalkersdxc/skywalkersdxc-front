@@ -1,10 +1,14 @@
 import { FormControl, Select, MenuItem, Alert } from '@mui/material';
 import homePageStyles from  "../pages/HomePage/HomePage.module.css"
 
-export default function roundedSelect({formik, optionName, options}:
-    {formik: any, optionName: string, options: string[] | number[],
-    }
-    ){
+export interface RoundSelectProps {
+    formik: any,
+    optionName: string, 
+    options: string[] | number[]
+
+}
+
+const roundedSelect: React.FC<RoundSelectProps> = ({formik, optionName, options}) => {
     return(
         <FormControl fullWidth>
             <Select
@@ -25,3 +29,5 @@ export default function roundedSelect({formik, optionName, options}:
         </FormControl>
     )
 }
+
+export default roundedSelect;
