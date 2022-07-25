@@ -1,7 +1,7 @@
 import { FormControl, Select, MenuItem, Alert } from '@mui/material';
 import homePageStyles from  "../pages/HomePage/HomePage.module.css"
 
-export default function roundSelect({formik, optionName, options}:
+export default function roundedSelect({formik, optionName, options}:
     {formik: any, optionName: string, options: string[] | number[],
     }
     ){

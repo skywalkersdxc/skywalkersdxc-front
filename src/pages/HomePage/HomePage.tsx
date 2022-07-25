@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from '@mui/material';
 import homePageSyles from "./HomePage.module.css"
-import RoundSelect from "../../components/roundSelect"
+import RoundedSelect from "../../components/roundedSelect"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { StyledEngineProvider } from '@mui/material/styles';
@@ -33,7 +33,7 @@ function HomePage() {
             </Grid>
             <Grid item xs={12} container justifyContent="space-between" spacing={2}>
               <Grid item xs={5} md={2}>
-                <RoundSelect
+                <RoundedSelect
                   formik={formik}
                   optionName="tripType"
                   options={["Round Trip", "One Way"]}

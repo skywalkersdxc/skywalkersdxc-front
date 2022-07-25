@@ -1,10 +1,10 @@
 import { render, screen} from '@testing-library/react';
-import RoundSelect from "./roundSelect"
+import RoundedSelect from "./roundedSelect"
 import userEvent from '@testing-library/user-event'
 
 test('Check For correct functionallity', async () => {
     render(    
-    <RoundSelect 
+    <RoundedSelect 
         formik={{
             values: ["tripType"],
             errors: ["tripType"],
