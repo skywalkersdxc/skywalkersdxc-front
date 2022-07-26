@@ -35,4 +35,3 @@ const roundedSelect: React.FC<RoundSelectProps> = ({formik, optionName, options}
 }
 
 export default roundedSelect;
-//{optionName !== "tripType" ?  <GroupIcon /> : null}
