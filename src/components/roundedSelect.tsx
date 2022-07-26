@@ -1,6 +1,6 @@
-import { FormControl, Select, MenuItem, Alert } from '@mui/material';
+import { FormControl, Select, MenuItem, Alert, Typography } from '@mui/material';
 import homePageStyles from  "../pages/HomePage/HomePage.module.css"
-
+import GroupIcon from '@mui/icons-material/Group';
 export interface RoundSelectProps {
     formik: any,
     optionName: string, 
@@ -19,7 +19,11 @@ const roundedSelect: React.FC<RoundSelectProps> = ({formik, optionName, options}
                 onBlur={formik.onBlur}
                 className={homePageStyles.roundSelect}
             >
-                {options.map((item) => <MenuItem key={item} value={item}>{item}</MenuItem>)}
+                {options.map((item) => 
+                <MenuItem key={item} value={item}>
+                {optionName !== "tripType" ?  <GroupIcon/> : null}
+                {item}
+                </MenuItem>)}
             </Select>
             {formik.errors[optionName] && formik.touched[optionName] ? 
             <Alert severity="error" className={homePageStyles.alertErrors}>
@@ -31,3 +35,4 @@ const roundedSelect: React.FC<RoundSelectProps> = ({formik, optionName, options}
 }
 
 export default roundedSelect;
+//{optionName !== "tripType" ?  <GroupIcon /> : null}
