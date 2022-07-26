@@ -7,7 +7,7 @@ const trypType : {
     oneWay: "One Way"
 }
 
-const passengers : number[] = [1,2,3,4,5,6]
+const passengers : number[] = [1,2,3,4,5,6,7,8,9]
 
 const constants = {
     trypType,
