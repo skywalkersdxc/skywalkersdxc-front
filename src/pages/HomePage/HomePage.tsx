@@ -13,7 +13,7 @@ function HomePage() {
       passengers: Yup.number().required("Number of passengers is required!")
     }),
     initialValues: {
-      tripType: constants.trypType.round,
+      tripType: constants.tripType[0],
       passengers: 1
     },
     onSubmit: values => {
@@ -39,7 +39,7 @@ function HomePage() {
                 <RoundedSelect
                   formik={formik}
                   optionName="tripType"
-                  options={[constants.trypType.round, constants.trypType.oneWay]}
+                  options={constants.tripType}
                 />
               </Grid>
               <Grid item xs={5} md={4}>
