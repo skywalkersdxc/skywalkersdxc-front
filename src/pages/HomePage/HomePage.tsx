@@ -47,6 +47,7 @@ function HomePage() {
                     formik={formik}
                     optionName="passengers"
                     options={constants.passengers}
+                    iconName="groupIcon"
                 />
               </Grid>
             </Grid>
