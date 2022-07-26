@@ -9,10 +9,12 @@ import constants from "../../utils/constants"
 function HomePage() {
   const formik = useFormik({
     validationSchema: Yup.object().shape({
-      tripType: Yup.string().required("Trip type is required!")
+      tripType: Yup.string().required("Trip type is required!"),
+      passengers: Yup.number().required("Number of passengers is required!")
     }),
     initialValues: {
-      tripType: constants.trypType.round
+      tripType: constants.tripType[0],
+      passengers: 1
     },
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
@@ -32,16 +34,21 @@ function HomePage() {
                 The smartest flight search on the internet
               </Typography>
             </Grid>
-            <Grid item xs={12} container justifyContent="space-between" spacing={2}>
-              <Grid item xs={5} md={2}>
+            <Grid item md={8} container justifyContent="space-between" spacing={2}>
+              <Grid item xs={5} md={4}>
                 <RoundedSelect
                   formik={formik}
                   optionName="tripType"
-                  options={[constants.trypType.round, constants.trypType.oneWay]}
+                  options={constants.tripType}
                 />
               </Grid>
-              <Grid item xs={6} md={2}>
-              passenger
+              <Grid item xs={5} md={4}>
+                <RoundedSelect
+                    formik={formik}
+                    optionName="passengers"
+                    options={constants.passengers}
+                    iconName="groupIcon"
+                />
               </Grid>
             </Grid>
             <Grid item xs={12}>

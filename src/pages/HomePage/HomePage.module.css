@@ -6,8 +6,17 @@
 .roundSelect {
     border-radius: 30px;
     height: 35px;
+    display: flex;
 }
 
 .alertErrors{
     margin-top: 20px;
+}
+
+div[data-testid="passengers"] div[role="button"] {
+    display: flex;
+}
+
+svg[data-testid="GroupIcon"] {
+    padding-right: 10px;
 }

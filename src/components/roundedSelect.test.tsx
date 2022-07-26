@@ -11,7 +11,7 @@ test('Check For correct functionallity', async () => {
             errors: ["tripType"],
         }}
         optionName="tripType"
-        options={[constants.trypType.round, constants.trypType.oneWay]}
+        options={constants.tripType}
     />,
     )
     await userEvent.click(screen.getByTestId("tripType"))
