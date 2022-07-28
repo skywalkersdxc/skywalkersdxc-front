@@ -3,12 +3,6 @@
     height: 100vh;
 }
 
-.roundSelect {
-    border-radius: 30px;
-    height: 35px;
-    display: flex;
-}
-
 .alertErrors{
     margin-top: 20px;
 }
