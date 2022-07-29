@@ -10,18 +10,21 @@ import moment from "moment";
 
 function HomePage() {
   const today = moment().set('hour', 0).set('minute', 0).set('second', 0).set('millisecond', 0);
+  const futureLimit = today.clone().add(1, 'year').toISOString();
   const formik = useFormik({
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
       departureDate: Yup.date()
                         .required("Departure date is always required")
-                        .min(today.toISOString(), "Departure date cannot be before current date"),
+                        .min(today.toISOString(), "Departure date cannot be before current date")
+                        .max(futureLimit, "Dates cannnot be that far in advance."),
       returnDate: Yup.date()
                     .when("tripType", {
                       is: constants.tripType[0],
                       then: Yup.date()
                                .min(Yup.ref("departureDate"), "Return date cannot be before departure date")
+                               .max(futureLimit, "Dates cannnot be that far in advance.")
                     })
     }),
     initialValues: {

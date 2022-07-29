@@ -49,6 +49,7 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                                     ...params.InputProps,
                                     className: homePageStyles.inputDateField
                                 }}
+                                label={props.fieldName}
                             />
                     }
                     value={props.value} 

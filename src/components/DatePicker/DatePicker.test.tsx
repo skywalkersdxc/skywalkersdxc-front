@@ -57,7 +57,7 @@ describe("DatesPicker: Formik integration", () => {
                 formik={formik}
             />
         )
-        let pickerTextNode = screen.getByPlaceholderText('Departure Date');
+        let pickerTextNode = screen.getByLabelText('TestPicker');
         userEvent.type(pickerTextNode, "08/01/2022{enter}");
         expect(setFieldValue.calledOnceWith("TestPicker")).toBeTruthy();
     });
