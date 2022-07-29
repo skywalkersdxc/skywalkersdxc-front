@@ -2,6 +2,7 @@ import { Alert, FormControl, TextField }  from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment, { Moment } from "moment";
+import homePageStyles from "../../pages/HomePage/HomePage.module.css";
 
 interface DatesPickerProps {
     display: boolean,
@@ -18,9 +19,11 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
         return <Empty/>
 
 
-    const handleChange = (v: Moment | null, keyboardInput: string | undefined) => {
-        if(v && v!.isValid()){
-            let formattedDate = v.toISOString();
+    const handleDateChange = (dateValue: Moment | null, keyboardInput: string | undefined) => {
+        if(!dateValue) return;
+
+        if(dateValue.isValid()){
+            const formattedDate = dateValue.toISOString();
             formik.setFieldValue(props.fieldName, formattedDate);
         }
     }
@@ -32,15 +35,22 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                 <DatePicker
                     data-testid={props.fieldName}
                     label={props.label}
-                    onChange={handleChange}
+                    onChange={handleDateChange}
                     renderInput={
                         (params) => 
                             <TextField
                                 {...params}
-                                placeholder="Departure Date"
+                                inputProps={{
+                                    ...params.inputProps, 
+                                    readOnly: true, 
+                                }}
                                 name={props.fieldName}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    className: homePageStyles.inputDateField
+                                }}
                             />
-                        }
+                    }
                     value={props.value} 
                     closeOnSelect
                     disablePast

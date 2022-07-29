@@ -21,7 +21,7 @@ function HomePage() {
                     .when("tripType", {
                       is: constants.tripType[0],
                       then: Yup.date()
-                               .min(Yup.ref("departureDate"), "Return date is required for round trips, cannot be before departure date")
+                               .min(Yup.ref("departureDate"), "Return date cannot be before departure date")
                     })
     }),
     initialValues: {
@@ -31,8 +31,8 @@ function HomePage() {
       returnDate: today.add(3, 'days').toISOString()
     },
     onSubmit: (values) => {
-      let departureDateFormatted = moment(values.departureDate).format("MM/DD/YYYY");
-      let returnDateFormatted = values.tripType === constants.tripType[1] 
+      const departureDateFormatted = moment(values.departureDate).format("MM/DD/YYYY");
+      const returnDateFormatted = values.tripType === constants.tripType[1] 
                                           ? ""
                                           : moment(values.returnDate).format("MM/DD/YYYY");
       values.departureDate = departureDateFormatted;
