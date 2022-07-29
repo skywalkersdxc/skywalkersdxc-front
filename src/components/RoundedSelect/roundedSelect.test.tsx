@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import RoundedSelect from "./RoundedSelect";
+import RoundedSelect from "./roundedSelect";
 import userEvent from "@testing-library/user-event";
 import constants from "../../utils/constants";
 
