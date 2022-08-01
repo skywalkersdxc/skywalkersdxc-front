@@ -1,4 +1,4 @@
-import { Alert, Autocomplete, FormControl, TextField } from "@mui/material";
+import { Autocomplete, FormControl, TextField } from "@mui/material";
 import { Place, AirplanemodeActive } from "@mui/icons-material";
 import React from "react";
 import styles from "./AirportPicker.module.css";
