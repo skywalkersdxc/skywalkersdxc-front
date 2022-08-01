@@ -3,6 +3,18 @@
     height: 100vh;
 }
 
+
+.roundSelect {
+    border-radius: 30px;
+    height: 35px;
+    display: flex;
+}
+
+.inputDateField {
+    border-radius: 30px;
+    padding: 0 20px 0 10px;
+}
+
 .alertErrors{
     margin-top: 20px;
 }
