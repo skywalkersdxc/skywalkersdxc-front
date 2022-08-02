@@ -13,6 +13,7 @@ import constants from "../../utils/constants";
 import moment from "moment";
 
 function HomePage() {
+  const airports = ["MXN", "USA", "CAN", "ARG", "CHL", "BRZ"];
   const today = moment()
     .set("hour", 0)
     .set("minute", 0)
@@ -23,6 +24,10 @@ function HomePage() {
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
+      departureFlight: Yup.string().required("Departure flight is required!"),
+      destinationFlight: Yup.string().required(
+        "Destination flight is required!"
+      ),
       departureDate: Yup.date()
         .required("Departure date is always required")
         .min(
@@ -106,14 +111,18 @@ function HomePage() {
             >
               <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
                 <AirportPicker
-                  airports={["MXN", "USA", "CAN", "ARG", "CHL", "BRZ"]}
+                  airports={airports}
                   flightType="departure"
+                  formik={formik}
+                  fieldName="departureFlight"
                 />
               </Grid>
               <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
                 <AirportPicker
-                  airports={["MXN", "USA", "CAN", "ARG", "CHL", "BRZ"]}
+                  airports={airports}
                   flightType="destination"
+                  formik={formik}
+                  fieldName="destinationFlight"
                 />
               </Grid>
 

@@ -1,4 +1,4 @@
-import { Autocomplete, FormControl, TextField } from "@mui/material";
+import { Alert, Autocomplete, FormControl, TextField } from "@mui/material";
 import { Place, AirplanemodeActive } from "@mui/icons-material";
 import React from "react";
 import styles from "./AirportPicker.module.css";
@@ -6,6 +6,8 @@ import styles from "./AirportPicker.module.css";
 interface AirportPickerProps {
   airports: any[];
   flightType: string;
+  formik: any;
+  fieldName: string;
 }
 
 export interface IconComponentProps {
@@ -13,10 +15,15 @@ export interface IconComponentProps {
 }
 
 const AirportPicker: React.FC<AirportPickerProps> = ({
+  formik,
   airports,
   flightType,
+  fieldName,
 }: AirportPickerProps) => {
-  const handleDateChange = (keyboardInput: string | undefined) => {};
+  const handleFlightChange = (event: any, flight: string) => {
+    if (!flight) return;
+    formik.setFieldValue(fieldName, flight);
+  };
 
   const IconComponent: React.FC<IconComponentProps> = ({ type }) => {
     switch (type) {
@@ -40,17 +47,24 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     }
   };
   return (
-    <FormControl fullWidth className={styles.container}>
-      <IconComponent type={flightType} />
-      <Autocomplete
-        disablePortal
-        options={airports}
-        renderInput={(params) => (
-          <TextField {...params} label={selectLabel(flightType)} />
-        )}
-        className={styles.input}
-      />
-    </FormControl>
+    <div>
+      <FormControl fullWidth className={styles.container} error>
+        <IconComponent type={flightType} />
+        <Autocomplete
+          disablePortal
+          options={airports}
+          renderInput={(params) => (
+            <TextField {...params} label={selectLabel(flightType)} />
+          )}
+          className={styles.input}
+          onChange={handleFlightChange}
+          disableClearable
+        />
+      </FormControl>
+      {formik.errors[fieldName] && (
+        <Alert severity="error">{formik.errors[fieldName]}</Alert>
+      )}
+    </div>
   );
 };
 
