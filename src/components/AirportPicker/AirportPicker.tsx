@@ -10,8 +10,8 @@ interface AirportPickerProps {
   fieldName: string;
 }
 
-export interface IconComponentProps {
-  type: string | undefined;
+interface IconComponentProps {
+  type: string;
 }
 
 const AirportPicker: React.FC<AirportPickerProps> = ({
@@ -28,11 +28,10 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   const IconComponent: React.FC<IconComponentProps> = ({ type }) => {
     switch (type) {
       case "departure":
+      default:
         return <Place className={styles.icon} />;
       case "destination":
         return <AirplanemodeActive className={styles.icon} />;
-      default:
-        return null;
     }
   };
 
@@ -42,8 +41,6 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
         return "From";
       case "destination":
         return "To";
-      default:
-        return null;
     }
   };
   return (
@@ -55,7 +52,8 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
       >
         <IconComponent type={flightType} />
         <Autocomplete
-          disablePortal
+          id="autocompleteSearch"
+          data-testid="autocompleteSearch"
           options={airports}
           renderInput={(params) => (
             <TextField {...params} label={selectLabel(flightType)} />
