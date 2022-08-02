@@ -69,7 +69,7 @@ function HomePage() {
     <StyledEngineProvider injectFirst>
       <Container maxWidth="xl" className={homePageSyles.container}>
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} className={homePageSyles.gridContainer}>
             <Grid item xs={12}>
               <HomeButton isHomePage />
             </Grid>
