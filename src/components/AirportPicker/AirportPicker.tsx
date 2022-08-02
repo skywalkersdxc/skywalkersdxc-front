@@ -48,7 +48,11 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   };
   return (
     <div>
-      <FormControl fullWidth className={styles.container} error>
+      <FormControl
+        fullWidth
+        className={styles.container}
+        data-testid={fieldName}
+      >
         <IconComponent type={flightType} />
         <Autocomplete
           disablePortal
