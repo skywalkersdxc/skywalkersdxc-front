@@ -1,3 +1,13 @@
+@media screen and (min-width: 600px) {
+    .inputsFlightsContainer {
+        max-width: 400px !important;
+    }
+    .gridContainer {
+        display: flex !important;
+        justify-content: center !important;
+    }
+}
+
 .container {
     background-color: #eef7fd;
     height: 100vh;
@@ -7,10 +17,14 @@
     border-radius: 30px;
     height: 35px;
     display: flex;
-    background-color: white;
 }
 
-.alertErrors {
+.inputDateField {
+    border-radius: 30px;
+    padding: 0 20px 0 10px;
+}
+
+.alertErrors{
     margin-top: 20px;
 }
 
@@ -20,4 +34,25 @@ div[data-testid="passengers"] div[role="button"] {
 
 svg[data-testid="GroupIcon"] {
     padding-right: 10px;
+}
+
+.inputsFlightsContainer {
+    background-color: white;
+    margin-top: 36px;
+    margin-left: 16px;
+    padding-top: 0px !important;
+    border-radius: 20px;
+}
+
+.flightPicker:first-of-type {
+    padding-top: 20px;
+}
+
+.datePicker:last-of-type {
+    padding-bottom: 20px;
+}
+
+.flightPicker, .datePicker {
+    padding-left: 0px !important;
+    margin-right: 16px;
 }
