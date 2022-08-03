@@ -113,7 +113,12 @@ export interface IFlightSearchQuery {
 export interface IFlightOffers {
     data: FlightProps[];
     dictionaries: object;
-    meta: object;
+    meta: {
+        count: number,
+        links: {
+            self: string
+        }
+    };
 }
 
 export interface IFlightSearchStatus {

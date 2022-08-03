@@ -16,6 +16,7 @@ import { useState } from "react";
 import { searchFlight } from "../../logic/searchFlight";
 import { useNavigate } from "react-router-dom";
 import { IFlightSearchQuery } from "../../intefaces/flights";
+import { useFlightOffers } from "../../utils/flightsSearchContext";
 
 interface IFlightSearchStatus {
   isLoading: boolean,
@@ -35,17 +36,15 @@ function HomePage() {
   const futureLimit = today.clone().add(1, "year").toISOString();
 
   const navigate = useNavigate();
-
-
   const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
+  const { setFlightOffers } = useFlightOffers();
+
   const formik = useFormik({
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
       departureFlight: Yup.string().required("Departure flight is required!"),
-      destinationFlight: Yup.string().required(
-        "Destination flight is required!"
-      ),
+      destinationFlight: Yup.string().required("Destination flight is required!"),
       departureDate: Yup.date()
         .required("Departure date is always required")
         .min(
@@ -68,6 +67,8 @@ function HomePage() {
       passengers: 1,
       departureDate: today.toISOString(),
       returnDate: today.add(3, "days").toISOString(),
+      departureFlight: "",
+      destinationFlight: "",
     },
     onSubmit: async (values) => {
       const departureDateFormatted = moment(values.departureDate).format("YYYY-MM-DD");
@@ -76,8 +77,8 @@ function HomePage() {
                                           : moment(values.returnDate).format("YYYY-MM-DD");
       setFlightSearchStatus({isLoading: true});
       const query: IFlightSearchQuery = {
-        originLocationCode: "DFW",
-        destinationLocationCode: "JFK",
+        originLocationCode: values.departureFlight,
+        destinationLocationCode: values.destinationFlight,
         departureDate: departureDateFormatted,
         returnDate: returnDateFormatted,
         adults: values.passengers,
@@ -88,12 +89,11 @@ function HomePage() {
       };
       searchFlight(query)
         .then(result => {
-          navigate('/results', {
-            state: {
-              test: "X",
-              ...result
-            }
-          })
+          setFlightSearchStatus({
+            isLoading: false
+          });
+          setFlightOffers(result);
+          navigate('/results');
         })
         .catch(error => {
           console.error("API ERROR", error);

@@ -3,36 +3,42 @@ import { HomeButton } from "../../components/index";
 import { StyledEngineProvider } from "@mui/material/styles";
 import resultsPageStyles from "./ResultsPage.module.css";
 import { IFlightOffers } from "../../intefaces/flights";
-import { useLocation, useNavigate } from "react-router-dom"
-import { useEffect } from "react";
+import { Navigate } from "react-router-dom"
 
-interface IResultsPageLocation {
-  location?: {
-    state?: IFlightOffers
-  }
-}
+import { useFlightOffers } from "../../utils/flightsSearchContext";
 
-function ResultsPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  useEffect(() => {    
-    if(!location.state){
-      navigate(-1);
-    }
-  }, []);
-
+function ResultsPage(data: IFlightOffers) {
   return (
-    <StyledEngineProvider injectFirst>
-      <Container maxWidth="xl" className={resultsPageStyles.container}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <HomeButton />
+      <StyledEngineProvider injectFirst>
+        <Container maxWidth="xl" className={resultsPageStyles.container}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <HomeButton />
+            </Grid>
+            <p>{`Found ${data.meta.count} flight offers`}</p>
           </Grid>
-        </Grid>
-      </Container>
-    </StyledEngineProvider>
+        </Container>
+      </StyledEngineProvider>
   );
 }
 
-export default ResultsPage;
+function Redirect(){
+  return (
+    <Navigate
+      to={"/"}
+    />
+  )
+}
+
+
+function ResultsPageProxy(){
+  const { flightOffers } = useFlightOffers();
+  console.log("RESULTS PAGE", flightOffers)
+  if(!flightOffers.data)
+    return Redirect();
+  
+  return ResultsPage(flightOffers);
+}
+
+export default ResultsPageProxy;
