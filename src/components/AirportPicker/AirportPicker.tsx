@@ -56,8 +56,8 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
 
   const [keyword, setKeyword] = useState('')
   const [search, setSearch] = useState('')
-  const [loading, setLoading] = React.useState(false)
-  const [airportsOptions, setAirportsOptions] = React.useState([]);
+  const [loading, setLoading] = useState(false)
+  const [airportsOptions, setAirportsOptions] = useState([]);
 
   const debounceLoadData = useCallback(debounce(setKeyword, 1000), []);
 
@@ -71,9 +71,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     const { out, source } = getData({ keyword });
 
     out.then(res => {
-      if (!res.data.code) {
-        setAirportsOptions(res.data);
-      }
+      setAirportsOptions(res.data);
       setLoading(false)
     }).catch(err => {
       setAirportsOptions([]);
@@ -107,6 +105,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
           }
           renderInput={(params) => (
             <TextField {...params}
+               data-testid="autocompleteText"
                label={selectLabel(flightType)}
                onChange={e => {
                  e.preventDefault()
