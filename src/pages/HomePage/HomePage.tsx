@@ -1,16 +1,30 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Alert, Container, Grid, Typography } from "@mui/material";
 import homePageSyles from "./HomePage.module.css";
 import {
   RoundedSelect,
   HomeButton,
   DatePicker,
   AirportPicker,
+  SubmitButton,
 } from "../../components/index";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { StyledEngineProvider } from "@mui/material/styles";
 import constants from "../../utils/constants";
 import moment from "moment";
+import { useState } from "react";
+import { searchFlight } from "../../logic/searchFlight";
+import { useNavigate } from "react-router-dom";
+import { IFlightSearchQuery } from "../../intefaces/flights";
+
+interface IFlightSearchStatus {
+  isLoading: boolean,
+  result?: {
+      error: {
+          message: string
+      },
+  }
+}
 
 function HomePage() {
   const today = moment()
@@ -19,6 +33,11 @@ function HomePage() {
     .set("second", 0)
     .set("millisecond", 0);
   const futureLimit = today.clone().add(1, "year").toISOString();
+
+  const navigate = useNavigate();
+
+
+  const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
   const formik = useFormik({
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
@@ -50,17 +69,43 @@ function HomePage() {
       departureDate: today.toISOString(),
       returnDate: today.add(3, "days").toISOString(),
     },
-    onSubmit: (values) => {
-      const departureDateFormatted = moment(values.departureDate).format(
-        "MM/DD/YYYY"
-      );
-      const returnDateFormatted =
-        values.tripType === constants.tripType[1]
-          ? ""
-          : moment(values.returnDate).format("MM/DD/YYYY");
-      values.departureDate = departureDateFormatted;
-      values.returnDate = returnDateFormatted;
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const departureDateFormatted = moment(values.departureDate).format("YYYY-MM-DD");
+      const returnDateFormatted = values.tripType === constants.tripType[1] 
+                                          ? undefined
+                                          : moment(values.returnDate).format("YYYY-MM-DD");
+      setFlightSearchStatus({isLoading: true});
+      const query: IFlightSearchQuery = {
+        originLocationCode: "DFW",
+        destinationLocationCode: "JFK",
+        departureDate: departureDateFormatted,
+        returnDate: returnDateFormatted,
+        adults: values.passengers,
+        children: 0,
+        infants: 0,
+        nonStop: true,
+        currencyCode: "MXN"
+      };
+      searchFlight(query)
+        .then(result => {
+          navigate('/results', {
+            state: {
+              test: "X",
+              ...result
+            }
+          })
+        })
+        .catch(error => {
+          console.error("API ERROR", error);
+          setFlightSearchStatus({
+            isLoading: false,
+            result: {
+              error: {
+                message: error
+              }
+            }
+          });
+        })
     },
   });
 
@@ -142,11 +187,22 @@ function HomePage() {
                 />
               </Grid>
             </Grid>
-            <Grid item xs={12} container justifyContent="center">
-              <button type="submit">Search</button>
+            <Grid container justifyContent="center" alignItems="center" spacing={2}>
+              <Grid item xs={12} sm={8} md={6} lg={3} >
+                <SubmitButton
+                  loading={flightSearchStatus.isLoading}
+                  disabled={!formik.isValid}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </form>
+        {
+          !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
+            <Alert severity="error">
+              {flightSearchStatus.result!.error!.message}
+            </Alert>
+        }
       </Container>
     </StyledEngineProvider>
   );
