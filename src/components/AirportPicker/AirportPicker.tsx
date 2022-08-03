@@ -1,10 +1,12 @@
-import { Alert, Autocomplete, FormControl, TextField } from "@mui/material";
+import {Alert, Autocomplete, CircularProgress, FormControl, TextField} from "@mui/material";
 import { Place, AirplanemodeActive } from "@mui/icons-material";
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import styles from "./AirportPicker.module.css";
+import { debounce } from "lodash";
+import { getData } from "./getData"
+import axios from "axios";
 
 interface AirportPickerProps {
-  airports: any[];
   flightType: string;
   formik: any;
   fieldName: string;
@@ -14,15 +16,23 @@ interface IconComponentProps {
   type: string;
 }
 
+interface Airport {
+  name: string;
+  location: string;
+}
+
 const AirportPicker: React.FC<AirportPickerProps> = ({
   formik,
-  airports,
   flightType,
   fieldName,
 }: AirportPickerProps) => {
-  const handleFlightChange = (event: any, flight: string) => {
-    if (!flight) return;
-    formik.setFieldValue(fieldName, flight);
+  const handleFlightChange = (event: any, flight: Airport) => {
+    if (flight){
+      setSearch(flight.name);
+      formik.setFieldValue(fieldName, flight.name);
+      return;
+    }
+    setSearch("")
   };
 
   const IconComponent: React.FC<IconComponentProps> = ({ type }) => {
@@ -43,6 +53,39 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
         return "To";
     }
   };
+
+  const [keyword, setKeyword] = useState('')
+  const [search, setSearch] = useState('')
+  const [loading, setLoading] = React.useState(false)
+  const [airportsOptions, setAirportsOptions] = React.useState([]);
+
+  const debounceLoadData = useCallback(debounce(setKeyword, 1000), []);
+
+  useEffect(() => {
+    debounceLoadData(search);
+  }, [search]);
+
+  useEffect(() => {
+
+    setLoading(true)
+    const { out, source } = getData({ keyword });
+
+    out.then(res => {
+      if (!res.data.code) {
+        setAirportsOptions(res.data);
+      }
+      setLoading(false)
+    }).catch(err => {
+      setAirportsOptions([]);
+      axios.isCancel(err);
+      setLoading(false)
+    });
+
+    return () => {
+      source.cancel()
+    };
+  }, [keyword]);
+
   return (
     <div>
       <FormControl
@@ -54,9 +97,37 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
         <Autocomplete
           id="autocompleteSearch"
           data-testid="autocompleteSearch"
-          options={airports}
+          options={airportsOptions}
+          getOptionLabel={(option: any) => {
+            return option.name + " (" + option.location + ")"
+          }}
+          loading={loading}
+          isOptionEqualToValue={(option, value) =>
+            option.name === value.name
+          }
           renderInput={(params) => (
-            <TextField {...params} label={selectLabel(flightType)} />
+            <TextField {...params}
+               label={selectLabel(flightType)}
+               onChange={e => {
+                 e.preventDefault()
+                 setSearch(e.target.value);
+               }}
+               inputProps={{
+                 ...params.inputProps,
+                 value: search
+               }}
+               InputProps={{
+                 ...params.InputProps,
+                 endAdornment: (
+                     <React.Fragment>
+                       {loading ? (
+                           <CircularProgress color="inherit" size={20} />
+                       ) : null}
+                       {params.InputProps.endAdornment}
+                     </React.Fragment>
+                 )
+               }}
+            />
           )}
           className={styles.input}
           onChange={handleFlightChange}

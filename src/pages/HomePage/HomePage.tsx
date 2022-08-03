@@ -13,7 +13,6 @@ import constants from "../../utils/constants";
 import moment from "moment";
 
 function HomePage() {
-  const airports = ["MXN", "USA", "CAN", "ARG", "CHL", "BRZ"];
   const today = moment()
     .set("hour", 0)
     .set("minute", 0)
@@ -111,7 +110,6 @@ function HomePage() {
             >
               <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
                 <AirportPicker
-                  airports={airports}
                   flightType="departure"
                   formik={formik}
                   fieldName="departureFlight"
@@ -119,7 +117,6 @@ function HomePage() {
               </Grid>
               <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
                 <AirportPicker
-                  airports={airports}
                   flightType="destination"
                   formik={formik}
                   fieldName="destinationFlight"
