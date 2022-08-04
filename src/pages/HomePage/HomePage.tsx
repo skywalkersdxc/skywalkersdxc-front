@@ -1,16 +1,23 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Alert, Container, Grid, Typography } from "@mui/material";
 import homePageSyles from "./HomePage.module.css";
 import {
   RoundedSelect,
   HomeButton,
   DatePicker,
   AirportPicker,
+  SubmitButton,
 } from "../../components/index";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { StyledEngineProvider } from "@mui/material/styles";
 import constants from "../../utils/constants";
 import moment from "moment";
+import { useState } from "react";
+import { searchFlight, transformFormData } from "../../logic/searchFlight";
+import { useNavigate } from "react-router-dom";
+import { useFlightOffers } from "../../utils/flightsSearchContext";
+import { IFlightSearchStatus, IHomePageFormData } from "./interfaces";
+
 
 function HomePage() {
   const today = moment()
@@ -19,14 +26,17 @@ function HomePage() {
     .set("second", 0)
     .set("millisecond", 0);
   const futureLimit = today.clone().add(1, "year").toISOString();
-  const formik = useFormik({
+
+  const navigate = useNavigate();
+  const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
+  const { setFlightOffers } = useFlightOffers();
+
+  const formik = useFormik<IHomePageFormData>({
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
       departureFlight: Yup.string().required("Departure flight is required!"),
-      destinationFlight: Yup.string().required(
-        "Destination flight is required!"
-      ),
+      destinationFlight: Yup.string().required("Destination flight is required!"),
       departureDate: Yup.date()
         .required("Departure date is always required")
         .min(
@@ -49,18 +59,25 @@ function HomePage() {
       passengers: 1,
       departureDate: today.toISOString(),
       returnDate: today.add(3, "days").toISOString(),
+      departureFlight: "",
+      destinationFlight: "",
     },
-    onSubmit: (values) => {
-      const departureDateFormatted = moment(values.departureDate).format(
-        "MM/DD/YYYY"
-      );
-      const returnDateFormatted =
-        values.tripType === constants.tripType[1]
-          ? ""
-          : moment(values.returnDate).format("MM/DD/YYYY");
-      values.departureDate = departureDateFormatted;
-      values.returnDate = returnDateFormatted;
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      setFlightSearchStatus({isLoading: true});
+      const query = transformFormData(values); 
+      try{
+        const result = await searchFlight(query);
+        setFlightSearchStatus({ isLoading: false });
+        setFlightOffers(result);
+        navigate('/results');
+      }catch(error){
+        setFlightSearchStatus({
+          isLoading: false,
+          result: {
+            error: { message: error as string }
+          }
+        });
+      }
     },
   });
 
@@ -142,11 +159,22 @@ function HomePage() {
                 />
               </Grid>
             </Grid>
-            <Grid item xs={12} container justifyContent="center">
-              <button type="submit">Search</button>
+            <Grid container justifyContent="center" alignItems="center" spacing={2}>
+              <Grid item xs={12} sm={8} md={6} lg={3} >
+                <SubmitButton
+                  loading={flightSearchStatus.isLoading}
+                  disabled={!formik.isValid}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </form>
+        {
+          !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
+            <Alert severity="error">
+              {flightSearchStatus.result!.error!.message}
+            </Alert>
+        }
       </Container>
     </StyledEngineProvider>
   );
