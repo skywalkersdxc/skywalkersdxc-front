@@ -1,4 +1,4 @@
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, IconButtonClassKey } from "@mui/material";
 
 
 interface ISubmitButtonProps {
@@ -6,8 +6,8 @@ interface ISubmitButtonProps {
     disabled: boolean
 }
 
-const SubmitButton = (props: ISubmitButtonProps) => {
-    const buttonContent = props.loading
+const SubmitButton: React.FC<ISubmitButtonProps> = ({loading, disabled}) => {
+    const buttonContent = loading
                             ? <CircularProgress color="primary" size={30} data-testid="submitBtn-progressWheel"/>
                             : <><input hidden type="submit" data-testid="submitBtn"/><span>Submit</span></>
 
@@ -18,7 +18,7 @@ const SubmitButton = (props: ISubmitButtonProps) => {
             color="primary"
             component="label"
             fullWidth
-            disabled={props.disabled || props.loading}
+            disabled={ disabled || loading }
             data-testid="submitBtnBase"
         >
             {buttonContent}

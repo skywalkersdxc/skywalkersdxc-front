@@ -13,19 +13,11 @@ import { StyledEngineProvider } from "@mui/material/styles";
 import constants from "../../utils/constants";
 import moment from "moment";
 import { useState } from "react";
-import { searchFlight } from "../../logic/searchFlight";
+import { searchFlight, transformFormData } from "../../logic/searchFlight";
 import { useNavigate } from "react-router-dom";
-import { IFlightSearchQuery } from "../../intefaces/flights";
 import { useFlightOffers } from "../../utils/flightsSearchContext";
+import { IFlightSearchStatus, IHomePageFormData } from "./interfaces";
 
-interface IFlightSearchStatus {
-  isLoading: boolean,
-  result?: {
-      error: {
-          message: string
-      },
-  }
-}
 
 function HomePage() {
   const today = moment()
@@ -39,7 +31,7 @@ function HomePage() {
   const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
   const { setFlightOffers } = useFlightOffers();
 
-  const formik = useFormik({
+  const formik = useFormik<IHomePageFormData>({
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
@@ -71,41 +63,21 @@ function HomePage() {
       destinationFlight: "",
     },
     onSubmit: async (values) => {
-      const departureDateFormatted = moment(values.departureDate).format("YYYY-MM-DD");
-      const returnDateFormatted = values.tripType === constants.tripType[1] 
-                                          ? undefined
-                                          : moment(values.returnDate).format("YYYY-MM-DD");
       setFlightSearchStatus({isLoading: true});
-      const query: IFlightSearchQuery = {
-        originLocationCode: values.departureFlight,
-        destinationLocationCode: values.destinationFlight,
-        departureDate: departureDateFormatted,
-        returnDate: returnDateFormatted,
-        adults: values.passengers,
-        children: 0,
-        infants: 0,
-        nonStop: true,
-        currencyCode: "MXN"
-      };
-      searchFlight(query)
-        .then(result => {
-          setFlightSearchStatus({
-            isLoading: false
-          });
-          setFlightOffers(result);
-          navigate('/results');
-        })
-        .catch(error => {
-          console.error("API ERROR", error);
-          setFlightSearchStatus({
-            isLoading: false,
-            result: {
-              error: {
-                message: error
-              }
-            }
-          });
-        })
+      const query = transformFormData(values); 
+      try{
+        const result = await searchFlight(query);
+        setFlightSearchStatus({ isLoading: false });
+        setFlightOffers(result);
+        navigate('/results');
+      }catch(error){
+        setFlightSearchStatus({
+          isLoading: false,
+          result: {
+            error: { message: error as string }
+          }
+        });
+      }
     },
   });
 
