@@ -1,0 +1,30 @@
+.containerCard {
+    background-color: #ffffff;
+    padding: 17px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.originDestiny {
+    padding: 10px;
+}
+
+.flightProgress {
+    height: 11px;
+    border-radius: 20px;
+}
+
+.amountContainer {
+    padding: 12px;
+}
+
+.dividerAmount {
+    background-color: #000000;
+    margin-bottom: 12px;
+}
+
+.amountButton {
+    font-weight: bold;
+}
