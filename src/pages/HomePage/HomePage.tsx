@@ -6,6 +6,7 @@ import {
   DatePicker,
   AirportPicker,
   SubmitButton,
+  FlightCard
 } from "../../components/index";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -18,7 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { useFlightOffers } from "../../utils/flightsSearchContext";
 import { IFlightSearchStatus, IHomePageFormData } from "./interfaces";
 
+import { FlightResultsProps } from "../../components/FlightCard/FlightCard";
 
+const dummyFlightOffers = {data: []}
 function HomePage() {
   const today = moment()
     .set("hour", 0)
@@ -84,97 +87,104 @@ function HomePage() {
   return (
     <StyledEngineProvider injectFirst>
       <Container maxWidth="xl" className={homePageSyles.container}>
-        <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2} className={homePageSyles.gridContainer}>
-            <Grid item xs={12}>
-              <HomeButton isHomePage />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h5">
-                The smartest flight search on the internet
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              md={8}
-              container
-              justifyContent="space-between"
-              spacing={2}
-            >
-              <Grid item xs={5} md={4}>
-                <RoundedSelect
-                  formik={formik}
-                  optionName="tripType"
-                  options={constants.tripType}
-                />
-              </Grid>
-              <Grid item xs={5} md={4}>
-                <RoundedSelect
-                  formik={formik}
-                  optionName="passengers"
-                  options={constants.passengers}
-                  iconName="groupIcon"
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              item
-              spacing={2}
-              xs={12}
-              justifyContent="center"
-              className={homePageSyles.inputsFlightsContainer}
-            >
-              <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
-                <AirportPicker
-                  flightType="departure"
-                  formik={formik}
-                  fieldName="departureFlight"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
-                <AirportPicker
-                  flightType="destination"
-                  formik={formik}
-                  fieldName="destinationFlight"
-                />
-              </Grid>
+        <Grid container>
+          <Grid item md={12}>
+            <form onSubmit={formik.handleSubmit}>
+              <Grid container spacing={2} className={homePageSyles.gridContainer}>
+                <Grid item xs={12}>
+                  <HomeButton isHomePage />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h5">
+                    The smartest flight search on the internet
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  md={8}
+                  container
+                  justifyContent="space-between"
+                  spacing={2}
+                >
+                  <Grid item xs={5} md={4}>
+                    <RoundedSelect
+                      formik={formik}
+                      optionName="tripType"
+                      options={constants.tripType}
+                    />
+                  </Grid>
+                  <Grid item xs={5} md={4}>
+                    <RoundedSelect
+                      formik={formik}
+                      optionName="passengers"
+                      options={constants.passengers}
+                      iconName="groupIcon"
+                    />
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  spacing={2}
+                  xs={12}
+                  justifyContent="center"
+                  className={homePageSyles.inputsFlightsContainer}
+                >
+                  <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
+                    <AirportPicker
+                      flightType="departure"
+                      formik={formik}
+                      fieldName="departureFlight"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
+                    <AirportPicker
+                      flightType="destination"
+                      formik={formik}
+                      fieldName="destinationFlight"
+                    />
+                  </Grid>
 
-              <Grid item xs={12} sm={6} className={homePageSyles.datePicker}>
-                <DatePicker
-                  display
-                  formik={formik}
-                  fieldName="departureDate"
-                  value={formik.values.departureDate}
-                  label="Departure Date"
-                />
+                  <Grid item xs={12} sm={6} className={homePageSyles.datePicker}>
+                    <DatePicker
+                      display
+                      formik={formik}
+                      fieldName="departureDate"
+                      value={formik.values.departureDate}
+                      label="Departure Date"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={homePageSyles.datePicker}>
+                    <DatePicker
+                      display={formik.values.tripType === constants.tripType[0]}
+                      formik={formik}
+                      fieldName="returnDate"
+                      value={formik.values.returnDate}
+                      label="Return Date"
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container justifyContent="center" alignItems="center" spacing={2}>
+                  <Grid item xs={12} sm={8} md={6} lg={3} >
+                    <SubmitButton
+                      loading={flightSearchStatus.isLoading}
+                      disabled={!formik.isValid}
+                    />
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6} className={homePageSyles.datePicker}>
-                <DatePicker
-                  display={formik.values.tripType === constants.tripType[0]}
-                  formik={formik}
-                  fieldName="returnDate"
-                  value={formik.values.returnDate}
-                  label="Return Date"
-                />
-              </Grid>
-            </Grid>
-            <Grid container justifyContent="center" alignItems="center" spacing={2}>
-              <Grid item xs={12} sm={8} md={6} lg={3} >
-                <SubmitButton
-                  loading={flightSearchStatus.isLoading}
-                  disabled={!formik.isValid}
-                />
-              </Grid>
-            </Grid>
+            </form>
+            {
+              !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
+                <Alert severity="error">
+                  {flightSearchStatus.result!.error!.message}
+                </Alert>
+            }
           </Grid>
-        </form>
-        {
-          !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
-            <Alert severity="error">
-              {flightSearchStatus.result!.error!.message}
-            </Alert>
-        }
+          <Grid item md={12} container justifyContent="space-between">
+            {dummyFlightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item}/>)}
+          </Grid>
+        </Grid>
       </Container>
     </StyledEngineProvider>
   );
