@@ -13,6 +13,10 @@ export async function searchFlight(query: IFlightSearchQuery) : Promise<IFlightO
     
     try{
         const result = await axios(requestConfig);
+        const flightOffers = result.data;
+        if(!flightOffers.meta.count){
+            return Promise.reject("No flights found for this criteria.");
+        } 
         return Promise.resolve(result.data as IFlightOffers);
     }catch(exception){
         const requestError = exception as AxiosError;
