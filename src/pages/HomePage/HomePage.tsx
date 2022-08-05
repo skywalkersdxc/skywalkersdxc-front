@@ -15,13 +15,9 @@ import constants from "../../utils/constants";
 import moment from "moment";
 import { useState } from "react";
 import { searchFlight, transformFormData } from "../../logic/searchFlight";
-import { useNavigate } from "react-router-dom";
 import { useFlightOffers } from "../../utils/flightsSearchContext";
-import { IFlightSearchStatus, IHomePageFormData } from "./interfaces";
+import { IFlightSearchStatus, IHomePageFormData, FlightResultsProps } from "./interfaces";
 
-import { FlightResultsProps } from "../../components/FlightCard/FlightCard";
-
-const dummyFlightOffers = {data: []}
 function HomePage() {
   const today = moment()
     .set("hour", 0)
@@ -30,9 +26,8 @@ function HomePage() {
     .set("millisecond", 0);
   const futureLimit = today.clone().add(1, "year").toISOString();
 
-  const navigate = useNavigate();
   const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
-  const { setFlightOffers } = useFlightOffers();
+  const { flightOffers, setFlightOffers } = useFlightOffers();
 
   const formik = useFormik<IHomePageFormData>({
     validationSchema: Yup.object().shape({
@@ -67,12 +62,11 @@ function HomePage() {
     },
     onSubmit: async (values) => {
       setFlightSearchStatus({isLoading: true});
-      const query = transformFormData(values); 
+      const query = transformFormData(values);
       try{
         const result = await searchFlight(query);
         setFlightSearchStatus({ isLoading: false });
         setFlightOffers(result);
-        navigate('/results');
       }catch(error){
         setFlightSearchStatus({
           isLoading: false,
@@ -164,14 +158,16 @@ function HomePage() {
                     />
                   </Grid>
                 </Grid>
-                <Grid container justifyContent="center" alignItems="center" spacing={2}>
-                  <Grid item xs={12} sm={8} md={6} lg={3} >
-                    <SubmitButton
-                      loading={flightSearchStatus.isLoading}
-                      disabled={!formik.isValid}
-                    />
+                {flightOffers?.data ? null : (
+                  <Grid container justifyContent="center" alignItems="center" spacing={2}>
+                    <Grid item xs={12} sm={8} md={6} lg={3} >
+                      <SubmitButton
+                        loading={flightSearchStatus.isLoading}
+                        disabled={!formik.isValid}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
+                )}
               </Grid>
             </form>
             {
@@ -182,7 +178,7 @@ function HomePage() {
             }
           </Grid>
           <Grid item md={12} container justifyContent="space-between">
-            {dummyFlightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item}/>)}
+            {flightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item}/>)}
           </Grid>
         </Grid>
       </Container>
