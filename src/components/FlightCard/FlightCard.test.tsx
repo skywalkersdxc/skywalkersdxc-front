@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import FlightCard from "./FlightCard"
-import FlightInfoComponent from "./FlightInfoComponent"
+import { FlightInfoComponent } from "./FlightCard"
 import { convertDate, timeTravelDiff } from "../../utils/utils"
 
 const dummyData = {
