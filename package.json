@@ -25,7 +25,8 @@
     "sinon": "^14.0.0",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "gh-pages": "^4.0.0"
   },
   "scripts": {
     "start": "PORT=3500 react-scripts start",
@@ -35,7 +36,8 @@
     "test:watch": "react-scripts test --watchAll",
     "test:coverage": "react-scripts test --watchAll --coverage",
     "check-types": "tsc",
-    "predeploy": "npm run build","deploy": "gh-pages -d build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build dev"
   },
   "eslintConfig": {
     "extends": [
@@ -59,7 +61,6 @@
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^27.5.2",
     "@types/sinon": "^10.0.13",
-    "gh-pages": "^4.0.0",
     "jest": "^28.1.3"
   }
 }
