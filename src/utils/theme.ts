@@ -87,6 +87,13 @@ const theme = createTheme({
                     backgroundColor: colors.primary.main
                 }
             }
+        },
+        MuiCircularProgress: {
+            styleOverrides: {
+                colorPrimary: {
+                    color: "#FFFFFF"
+                }
+            }
         }
     }
 })

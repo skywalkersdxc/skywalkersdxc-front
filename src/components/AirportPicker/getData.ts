@@ -16,7 +16,7 @@ export const getData = (params: { keyword?: string | undefined; }) => {
 
     // GET request with all params we need
     const out = axios.get(
-        `http://localhost:3030/airports/?keyword=${searchQuery}`,
+        `${process.env.REACT_APP_API_AIRPORT_URL}/?keyword=${searchQuery}`,
         {
             cancelToken: source.token
         }

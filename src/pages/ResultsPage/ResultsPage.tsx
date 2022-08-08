@@ -1,43 +1,44 @@
 import { Container, Grid } from "@mui/material";
-import { HomeButton, RoundedSelect } from "../../components/index";
+import { HomeButton } from "../../components/index";
 import { StyledEngineProvider } from "@mui/material/styles";
 import resultsPageStyles from "./ResultsPage.module.css";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import constants from "../../utils/constants";
+import { IFlightOffers } from "../../intefaces/flights";
+import { Navigate } from "react-router-dom"
 
-function ResultsPage() {
-  const formik = useFormik({
-    validationSchema: Yup.object().shape({
-      tripType: Yup.string().required("Trip type is required!"),
-      passengers: Yup.number().required("Number of passengers is required!"),
-    }),
-    initialValues: {
-      tripType: constants.tripType[0],
-      passengers: 1,
-    },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
+import { useFlightOffers } from "../../utils/flightsSearchContext";
+
+
+function ResultsPage(data: IFlightOffers) {
   return (
-    <StyledEngineProvider injectFirst>
-      <Container maxWidth="xl" className={resultsPageStyles.container}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <HomeButton />
+      <StyledEngineProvider injectFirst>
+        <Container maxWidth="xl" className={resultsPageStyles.container}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <HomeButton />
+            </Grid>
+            <p>{`Found ${data.meta.count} flight offers`}</p>
           </Grid>
-          <Grid item xs={5} md={4}>
-            <RoundedSelect
-              formik={formik}
-              optionName="tripType"
-              options={constants.tripType}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </StyledEngineProvider>
+        </Container>
+      </StyledEngineProvider>
   );
 }
 
-export default ResultsPage;
+function Redirect(){
+  return (
+    <Navigate
+      to={"/"}
+    />
+  )
+}
+
+
+function ResultsPageProxy(){
+  const { flightOffers } = useFlightOffers();
+  console.log("RESULTS PAGE", flightOffers)
+  if(!flightOffers.data)
+    return Redirect();
+  
+  return ResultsPage(flightOffers);
+}
+
+export default ResultsPageProxy;

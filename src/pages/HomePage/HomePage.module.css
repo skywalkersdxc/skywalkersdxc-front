@@ -10,7 +10,8 @@
 
 .container {
     background-color: #eef7fd;
-    height: 100vh;
+    position: relative;
+    min-height:100vh;
 }
 
 .roundSelect {
@@ -55,4 +56,10 @@ svg[data-testid="GroupIcon"] {
 .flightPicker, .datePicker {
     padding-left: 0px !important;
     margin-right: 16px;
+}
+
+.submitButton {
+    margin-left: 0px;
+    margin-top: 8px;
+    margin-bottom: 18px;
 }

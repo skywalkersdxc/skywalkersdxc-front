@@ -7,6 +7,7 @@ export interface RoundSelectProps {
   optionName: string;
   options: string[] | number[];
   iconName?: string;
+  disabled?: boolean;
 }
 
 export interface IconComponentProps {
@@ -27,6 +28,7 @@ const RoundedSelect: React.FC<RoundSelectProps> = ({
   optionName,
   options,
   iconName,
+  disabled
 }) => {
   return (
     <FormControl fullWidth>
@@ -37,6 +39,7 @@ const RoundedSelect: React.FC<RoundSelectProps> = ({
         onChange={formik.handleChange}
         onBlur={formik.onBlur}
         className={homePageStyles.roundSelect}
+        disabled={disabled}
       >
         {options.map((item) => (
           <MenuItem key={item} value={item}>
