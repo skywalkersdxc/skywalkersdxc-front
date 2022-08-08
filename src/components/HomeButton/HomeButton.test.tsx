@@ -5,16 +5,16 @@ import { createMemoryHistory } from "history";
 
 const mockedNavigator = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...(jest.requireActual('react-router-dom') as any),
+jest.mock("react-router-dom", () => ({
+  ...(jest.requireActual("react-router-dom") as any),
   useNavigate: () => mockedNavigator,
 }));
 
-describe('HomeButton component', () => {
-  test('renders correctly', () => {
+describe("HomeButton component", () => {
+  test("renders correctly", () => {
     render(<HomeButton />);
 
-    expect(screen.getByTestId('home-button')).toBeInTheDocument();
+    expect(screen.getByTestId("home-button")).toBeInTheDocument();
   });
 
   test("do nothing when isHomePage props is truthy", () => {
@@ -36,7 +36,7 @@ describe('HomeButton component', () => {
       </MemoryRouter>
     );
 
-    fireEvent.click(screen.getByTestId('home-button'));
-    expect(mockedNavigator).toHaveBeenCalledWith('/');
+    fireEvent.click(screen.getByTestId("home-button"));
+    expect(mockedNavigator).toHaveBeenCalledWith("/");
   });
 });
