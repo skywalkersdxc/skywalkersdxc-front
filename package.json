@@ -1,4 +1,5 @@
 {
+  "homepage": "https://skywalkersdxc.github.io/skywalkersdxc-front/",
   "name": "skywalkersdxc-front",
   "version": "0.1.0",
   "private": true,
@@ -24,7 +25,8 @@
     "sinon": "^14.0.0",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "gh-pages": "^4.0.0"
   },
   "scripts": {
     "start": "PORT=3500 react-scripts start",
@@ -33,7 +35,9 @@
     "eject": "react-scripts eject",
     "test:watch": "react-scripts test --watchAll",
     "test:coverage": "react-scripts test --watchAll --coverage",
-    "check-types": "tsc"
+    "check-types": "tsc",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build dev"
   },
   "eslintConfig": {
     "extends": [
