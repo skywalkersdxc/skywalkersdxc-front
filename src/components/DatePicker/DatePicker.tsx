@@ -28,6 +28,14 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
             formik.setFieldValue(props.fieldName, formattedDate);
         }
     }
+    const selectLabel = (type: string) => {
+        switch (type) {
+          case "departureDate":
+            return "Departure Date";
+          case "returnDate":
+            return "Return Date";
+        }
+      };
     const today = moment();
     return (
         <FormControl fullWidth
@@ -51,7 +59,7 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                                     ...params.InputProps,
                                     className: homePageStyles.inputDateField
                                 }}
-                                label={props.fieldName}
+                                label={selectLabel(props.fieldName)}
                             />
                     }
                     value={props.value} 
