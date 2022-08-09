@@ -17,6 +17,7 @@ import { useState } from "react";
 import { searchFlight, transformFormData } from "../../logic/searchFlight";
 import { useFlightOffers } from "../../utils/flightsSearchContext";
 import { IFlightSearchStatus, IHomePageFormData, FlightResultsProps } from "./interfaces";
+import { IFlightOffers } from "../../intefaces/flights";
 
 function HomePage() {
   const today = moment()
@@ -68,6 +69,7 @@ function HomePage() {
         setFlightSearchStatus({ isLoading: false });
         setFlightOffers(result);
       }catch(error){
+        setFlightOffers({} as IFlightOffers);
         setFlightSearchStatus({
           isLoading: false,
           result: {
@@ -105,6 +107,7 @@ function HomePage() {
                       formik={formik}
                       optionName="tripType"
                       options={constants.tripType}
+                      disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
                   <Grid item xs={5} md={4}>
@@ -113,6 +116,7 @@ function HomePage() {
                       optionName="passengers"
                       options={constants.passengers}
                       iconName="groupIcon"
+                      disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
                 </Grid>
@@ -129,6 +133,7 @@ function HomePage() {
                       flightType="departure"
                       formik={formik}
                       fieldName="departureFlight"
+                      disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
@@ -136,6 +141,7 @@ function HomePage() {
                       flightType="destination"
                       formik={formik}
                       fieldName="destinationFlight"
+                      disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
 
@@ -146,6 +152,7 @@ function HomePage() {
                       fieldName="departureDate"
                       value={formik.values.departureDate}
                       label="Departure Date"
+                      disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} className={homePageSyles.datePicker}>
@@ -155,11 +162,17 @@ function HomePage() {
                       fieldName="returnDate"
                       value={formik.values.returnDate}
                       label="Return Date"
+                      disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
                 </Grid>
-                {flightOffers?.data ? null : (
-                  <Grid container justifyContent="center" alignItems="center" spacing={2}>
+                  <Grid
+                    container
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={2}
+                    className={homePageSyles.submitButton}
+                  >
                     <Grid item xs={12} sm={8} md={6} lg={3} >
                       <SubmitButton
                         loading={flightSearchStatus.isLoading}
@@ -167,7 +180,6 @@ function HomePage() {
                       />
                     </Grid>
                   </Grid>
-                )}
               </Grid>
             </form>
             {

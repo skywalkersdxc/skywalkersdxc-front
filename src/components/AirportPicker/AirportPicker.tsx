@@ -10,6 +10,7 @@ interface AirportPickerProps {
   flightType: string;
   formik: any;
   fieldName: string;
+  disabled?: boolean;
 }
 
 interface IconComponentProps {
@@ -25,6 +26,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   formik,
   flightType,
   fieldName,
+  disabled
 }: AirportPickerProps) => {
   const handleFlightChange = (event: any, flight: Airport) => {
     if (flight){
@@ -95,6 +97,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
         <Autocomplete
           id="autocompleteSearch"
           data-testid="autocompleteSearch"
+          disabled={disabled}
           options={airportsOptions}
           getOptionLabel={(option: any) => {
             return option.name + " (" + option.location + ")"
