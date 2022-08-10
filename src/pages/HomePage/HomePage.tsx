@@ -78,6 +78,10 @@ function HomePage() {
         });
       }
     },
+    onReset: () => {
+      setFlightOffers({} as IFlightOffers);
+      setFlightSearchStatus({ isLoading: false });
+    }
   });
 
   return (
@@ -88,7 +92,7 @@ function HomePage() {
             <form onSubmit={formik.handleSubmit}>
               <Grid container spacing={2} className={homePageSyles.gridContainer}>
                 <Grid item xs={12}>
-                  <HomeButton isHomePage />
+                  <HomeButton isHomePage formik={formik} />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h5">
@@ -134,6 +138,7 @@ function HomePage() {
                       formik={formik}
                       fieldName="departureFlight"
                       disabled={flightSearchStatus.isLoading}
+                      value={formik.values.departureFlight}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
@@ -142,6 +147,7 @@ function HomePage() {
                       formik={formik}
                       fieldName="destinationFlight"
                       disabled={flightSearchStatus.isLoading}
+                      value={formik.values.destinationFlight}
                     />
                   </Grid>
 

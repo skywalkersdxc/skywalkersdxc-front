@@ -4,13 +4,15 @@ import homeButtonStyles from "./HomeButton.module.css";
 
 interface HomeButtonProps {
   isHomePage?: boolean;
+  formik?: any;
 }
 
-const HomeButton: React.FC<HomeButtonProps> = ({ isHomePage }) => {
+const HomeButton: React.FC<HomeButtonProps> = ({ isHomePage, formik }) => {
   const navigate = useNavigate();
 
   const handleHomeButton = () => {
-    if (isHomePage) {
+    formik?.resetForm();
+    if(isHomePage) {
       return;
     }
     navigate("/");
