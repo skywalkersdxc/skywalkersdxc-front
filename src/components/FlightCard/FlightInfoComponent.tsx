@@ -4,7 +4,7 @@ import { convertDate, timeTravelDiff } from "../../utils/utils"
 import flightCardStyles from "./FlightCard.module.css"
 import React from "react";
 
-const aaImgUrlDummy = "https://www.aa.com/content/images/homepage/mobile-hero/en_US/Airplane-1.png"
+export const aaImgUrlDummy = "https://www.aa.com/content/images/homepage/mobile-hero/en_US/Airplane-1.png"
 export type FlightInfoComponentProps = {
     itineraries: ItinerariesProps,
     passengers?: number

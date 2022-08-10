@@ -25,7 +25,7 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
             <Fade in={open}>
                 <Grid container className={flightDetailsModalStyles.container} direction={"column"} xs={12}>
                     {/* head */ }
-                    <Grid item container xs={1}>
+                    <Grid item  xs={1}>
                         <Grid item container >
                             <Grid container item xs={2} alignItems={"center"}>
                                 <HomeButton isHomePage={false}/>
@@ -47,19 +47,22 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
                     </Grid>
 
                     {/* content */ }
-                    <Grid item container xs={10}>
+                    <Grid item xs={10}>
                         <Grid container direction={"column"} xs={12}>
                             <Grid item xs={1}>
                                 <FlightCard flightResults={flightOffer} showMode={true}/>
                             </Grid>
-                            <Grid item xs={8} direction={"column"} style={{backgroundColor: "aqua", minHeight: '72%'}}>
-                                <FlightItineraryInfo flightOffer={flightOffer}/>
+                            <Grid item xs={11} direction={"column"} style={{backgroundColor: "brown", }}>
+                                <Grid container xs={12} direction={"column"} >
+                                    <FlightItineraryInfo flightOffer={flightOffer} title={"OUTBOUND FLIGHT"}/>
+                                    <FlightItineraryInfo flightOffer={flightOffer} title={"RETURN FLIGHT"}/>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
 
                     {/* footer */ }
-                    <Grid item container style={{backgroundColor:"yellow"}} xs={1}>
+                    <Grid item  style={{backgroundColor:"yellow"}} xs={1}>
 
                     </Grid>
                 </Grid>
