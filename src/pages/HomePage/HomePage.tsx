@@ -84,6 +84,10 @@ function HomePage() {
     }
   });
 
+  const onClickHomeButton = () => {
+    formik?.resetForm();
+  }
+
   return (
     <StyledEngineProvider injectFirst>
       <Container maxWidth="xl" className={homePageSyles.container}>
@@ -92,7 +96,7 @@ function HomePage() {
             <form onSubmit={formik.handleSubmit}>
               <Grid container spacing={2} className={homePageSyles.gridContainer}>
                 <Grid item xs={12}>
-                  <HomeButton isHomePage formik={formik} />
+                  <HomeButton onClick={onClickHomeButton} />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h5">

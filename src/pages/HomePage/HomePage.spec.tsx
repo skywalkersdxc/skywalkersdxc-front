@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { IFlightOffers } from '../../intefaces/flights';
+import { Context } from '../../utils/flightsSearchContext';
 import HomePage from './HomePage';
 
 const mockedNavigator = jest.fn();
@@ -14,3 +16,19 @@ describe('HomePage Component', () => {
         expect(await screen.findByText(/The smartest flight search on the internet/)).toBeInTheDocument();
     });
 });
+
+describe('HomeButton Component in HomePage', () => {
+    it('reset context values', async () => {
+        const flightOffers = {} as IFlightOffers;
+        const setFlightOffers = jest.fn();
+        render(
+            <Context.Provider value={{ flightOffers, setFlightOffers }}>
+                <HomePage/>
+            </Context.Provider>
+            );
+        const homeButton = screen.getByTestId("home-button");
+        fireEvent.click(homeButton);
+        expect(setFlightOffers).toBeCalled();
+    });
+});
+
