@@ -171,14 +171,15 @@ function HomePage() {
               </Grid>
             </form>
             {
-              !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
+              !flightSearchStatus.isLoading && flightSearchStatus.result?.error &&
                 <Alert severity="error">
                   {flightSearchStatus.result!.error!.message}
                 </Alert>
             }
           </Grid>
-          <Grid item md={12} container justifyContent="space-between">
-            {flightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item}/>)}
+          <Grid item md={12} container justifyContent="space-between" className={homePageSyles.containerX}>
+            {flightOffers?.data?.map((item: FlightResultsProps) =>
+                <FlightCard key={item.id} flightResults={{...item, passengers: formik.values.passengers}}/>)}
           </Grid>
         </Grid>
       </Container>

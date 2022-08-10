@@ -1,87 +1,51 @@
+import React from "react";
 import { FlightResultsProps,  } from "../../pages/HomePage/interfaces";
-import {Box, Button, Divider, Fade, Grid, IconButton, Modal, Typography} from "@mui/material";
+import {Button, Grid, Typography} from "@mui/material";
 import flightCardStyles from "./FlightCard.module.css"
 import FlightInfoComponent from "./FlightInfoComponent";
-import CloseIcon from '@mui/icons-material/Close';
-import React from "react";
-import HomeButton from "../HomeButton/HomeButton";
+import FlightDetailsModal from "../FlightDetails/FlightDetailsModal";
 
-type FlightDetailsProps = {
-    flightDetail: FlightResultsProps
-}
+type FlightCardProps = {
+    flightResults: FlightResultsProps,
+    showMode?: boolean
+};
 
-const FlightCard: React.FC<{flightResults: FlightResultsProps}> = ({flightResults} : {flightResults: FlightResultsProps}) => {
+/**
+ *
+ * @param flightResults
+ * @param showMode - if true, the component doesn't show the price nor the details modal, if false it shows the
+ * passengers number data.
+ * @constructor
+ */
+const FlightCard: React.FC<FlightCardProps> = ({flightResults, showMode} : FlightCardProps) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightDetail}) => {
-        const style = {
-            bgcolor: 'background.paper',
-            height: '100%',
-            p: 1,
-        };
-
-        return (
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-describedby="modal-modal-description"
-            >
-                <Fade in={open}>
-                    <Grid container sx={style} direction={"column"} xs={12}>
-                        {/* head */ }
-                        <Grid item container xs={1}>
-                            <Grid item container alignContent={"space-between"}>
-                                <Grid container item xs={2} alignItems={"center"}>
-                                    <HomeButton isHomePage={false}/>
-                                </Grid>
-                                <Grid item container xs={7} alignItems={"center"}>
-                                    <Typography id="modal-modal-description">
-                                        Review Flight
-                                    </Typography>
-                                </Grid>
-                                <Grid item container xs={3} justifyContent={"flex-end"} alignItems={"center"}>
-                                    <IconButton onClick={handleClose} aria-label="delete">
-                                        <CloseIcon/>
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Divider className={flightCardStyles.dividerAmount}/>
-                            </Grid>
-                        </Grid>
-
-                        {/* content */ }
-                        <Grid item container xs={10}>
-
-                        </Grid>
-
-                        {/* footer */ }
-                        <Grid item container style={{backgroundColor:"yellow"}} xs={1}>
-
-                        </Grid>
-                    </Grid>
-                </Fade>
-            </Modal>
-        )
-    };
 
    return (
     <Grid data-testid="flightCard" key={flightResults.id} container item className={flightCardStyles.containerCard} xs={12}>
         {flightResults.itineraries.map((item) => <FlightInfoComponent key={item.duration} itineraries={item.segments[0]}/>)}
-        <Grid item xs={12} container flexDirection="row" className={flightCardStyles.amountContainer}>
-            <Grid item xs={12}>
-                <hr className={flightCardStyles.dividerAmount}/>
-            </Grid>
-            <Grid item xs={12} container justifyContent="flex-end">
-                <Grid item xs={4} container justifyContent="flex-end">
-                    <Button onClick={handleOpen} variant="outlined" className={flightCardStyles.amountButton}>${flightResults.price.total}</Button>
+        {
+            !showMode ?
+                <Grid item xs={12} container flexDirection="row" className={flightCardStyles.amountContainer}>
+                    <FlightDetailsModal flightOffer={flightResults} open={open} setOpen={setOpen}/>
+                    <Grid item xs={12}>
+                        <hr className={flightCardStyles.dividerAmount}/>
+                    </Grid>
+                    <Grid item xs={12} container justifyContent="flex-end">
+                        <Grid item xs={4} container justifyContent="flex-end">
+                            <Button onClick={handleOpen} variant="outlined" className={flightCardStyles.amountButton}>${flightResults.price.total}</Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Grid>
-
-        { <FlightDetailsModal flightDetail={flightResults}/> }
+                :
+                <Grid container xs={12}>
+                    <Grid item container xs={12} alignItems={"center"}>
+                        <Typography id="modal-modal-description">
+                            Passengers: {flightResults.passengers}
+                        </Typography>
+                    </Grid>
+                </Grid>
+        }
     </Grid>
    )
 }

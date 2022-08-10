@@ -7,7 +7,7 @@ export interface IFlightSearchStatus {
     }
 }
 
-export interface IHomePageFormData { 
+export interface IHomePageFormData {
     tripType: string,
     departureDate: string,
     passengers: number,
@@ -30,6 +30,7 @@ export interface FlightResultsProps {
     pricingOptions: any;
     validatingAirlineCodes: string[];
     travelerPricings: any[];
+    passengers?: number;
 }
 
 export interface ItinerariesProps {

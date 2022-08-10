@@ -2,10 +2,15 @@ import { ItinerariesProps } from "../../pages/HomePage/interfaces";
 import { Typography, Box, LinearProgress, Grid } from "@mui/material";
 import { convertDate, timeTravelDiff } from "../../utils/utils"
 import flightCardStyles from "./FlightCard.module.css"
+import React from "react";
 
 const aaImgUrlDummy = "https://www.aa.com/content/images/homepage/mobile-hero/en_US/Airplane-1.png"
+export type FlightInfoComponentProps = {
+    itineraries: ItinerariesProps,
+    passengers?: number
+};
 
-const FlightInfoComponent: React.FC<{itineraries: ItinerariesProps}> = ({itineraries}: {itineraries: ItinerariesProps}) => {
+const FlightInfoComponent: React.FC<FlightInfoComponentProps> = ({itineraries}: FlightInfoComponentProps) => {
     const {departure, arrival} = itineraries
     return (
         <Grid item xs={12} container data-testid="flightInfoComponent">
