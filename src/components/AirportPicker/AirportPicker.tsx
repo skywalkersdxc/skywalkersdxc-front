@@ -74,14 +74,11 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   //useEffect used to reset input value after clicking home button 
   useEffect(() => {
     if(!value) {
-      setSearch(value);
+      setSearch(defaultAirport || '');
     } 
   }, [value]);
 
   useEffect(() => {
-    if (defaultAirport){
-      formik.setFieldValue(fieldName, defaultAirport);
-    }
     setLoading(true)
     const { out, source } = getData({ keyword });
 
