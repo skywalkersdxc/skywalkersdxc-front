@@ -10,6 +10,7 @@ interface AirportPickerProps {
   flightType: string;
   formik: any;
   fieldName: string;
+  value: string;
   disabled?: boolean;
   defaultAirport?: string;
 }
@@ -27,6 +28,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   formik,
   flightType,
   fieldName,
+  value,
   disabled,
   defaultAirport
 }: AirportPickerProps) => {
@@ -68,6 +70,13 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   useEffect(() => {
     debounceLoadData(search);
   }, [search]);
+
+  //useEffect used to reset input value after clicking home button 
+  useEffect(() => {
+    if(!value) {
+      setSearch(value);
+    } 
+  }, [value]);
 
   useEffect(() => {
     if (defaultAirport){

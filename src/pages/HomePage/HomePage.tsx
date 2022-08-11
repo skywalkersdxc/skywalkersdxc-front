@@ -79,7 +79,15 @@ function HomePage() {
         });
       }
     },
+    onReset: () => {
+      setFlightOffers({} as IFlightOffers);
+      setFlightSearchStatus({ isLoading: false });
+    }
   });
+
+  const onClickHomeButton = () => {
+    formik?.resetForm();
+  }
 
   return (
     <StyledEngineProvider injectFirst>
@@ -89,7 +97,7 @@ function HomePage() {
             <form onSubmit={formik.handleSubmit}>
               <Grid container spacing={2} className={homePageSyles.gridContainer}>
                 <Grid item xs={12}>
-                  <HomeButton isHomePage />
+                  <HomeButton onClick={onClickHomeButton} />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h5">
@@ -135,6 +143,7 @@ function HomePage() {
                       formik={formik}
                       fieldName="departureFlight"
                       disabled={flightSearchStatus.isLoading}
+                      value={formik.values.departureFlight}
                       defaultAirport="LAX"
                     />
                   </Grid>
@@ -144,6 +153,7 @@ function HomePage() {
                       formik={formik}
                       fieldName="destinationFlight"
                       disabled={flightSearchStatus.isLoading}
+                      value={formik.values.destinationFlight}
                     />
                   </Grid>
 
