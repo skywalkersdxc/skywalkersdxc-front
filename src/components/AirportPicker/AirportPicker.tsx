@@ -12,6 +12,7 @@ interface AirportPickerProps {
   fieldName: string;
   value: string;
   disabled?: boolean;
+  defaultAirport?: string;
 }
 
 interface IconComponentProps {
@@ -28,7 +29,8 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   flightType,
   fieldName,
   value,
-  disabled
+  disabled,
+  defaultAirport
 }: AirportPickerProps) => {
   const handleFlightChange = (event: any, flight: Airport) => {
     if (flight){
@@ -36,7 +38,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
       formik.setFieldValue(fieldName, flight.name);
       return;
     }
-    setSearch("")
+    setSearch('')
   };
 
   const IconComponent: React.FC<IconComponentProps> = ({ type }) => {
@@ -59,7 +61,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   };
 
   const [keyword, setKeyword] = useState('')
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState(defaultAirport || '')
   const [loading, setLoading] = useState(false)
   const [airportsOptions, setAirportsOptions] = useState([]);
 
@@ -77,7 +79,9 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   }, [value]);
 
   useEffect(() => {
-
+    if (defaultAirport){
+      formik.setFieldValue(fieldName, defaultAirport);
+    }
     setLoading(true)
     const { out, source } = getData({ keyword });
 
@@ -108,13 +112,16 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
           data-testid="autocompleteSearch"
           disabled={disabled}
           options={airportsOptions}
-          getOptionLabel={(option: any) => {
+          getOptionLabel={(option: Airport) => {
             return option.name + " (" + option.location + ")"
           }}
           loading={loading}
           isOptionEqualToValue={(option, value) =>
             option.name === value.name
           }
+          className={styles.input}
+          onChange={handleFlightChange}
+          disableClearable
           renderInput={(params) => (
             <TextField {...params}
                data-testid="autocompleteText"
@@ -140,9 +147,6 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
                }}
             />
           )}
-          className={styles.input}
-          onChange={handleFlightChange}
-          disableClearable
         />
       </FormControl>
       {formik.errors[fieldName] && (
