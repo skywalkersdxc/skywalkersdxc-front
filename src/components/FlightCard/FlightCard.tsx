@@ -22,7 +22,7 @@ const FlightCard: React.FC<FlightCardProps> = ({flightResults, showMode} : Fligh
     const handleOpen = () => setOpen(true);
 
    return (
-    <Grid data-testid="flightCard" key={flightResults.id} container item className={flightCardStyles.containerCard} xs={12}>
+    <Grid data-testid="flightCard" key={flightResults.id} container className={flightCardStyles.containerCard} xs={12}>
         {flightResults.itineraries.map((item) => <FlightInfoComponent key={item.duration} itineraries={item.segments[0]}/>)}
         {
             !showMode ?

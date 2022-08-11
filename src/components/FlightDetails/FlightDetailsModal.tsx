@@ -47,13 +47,13 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
                     </Grid>
 
                     {/* content */ }
-                    <Grid item xs={10}>
+                    <Grid item container xs={10}>
                         <Grid container direction={"column"} xs={12}>
-                            <Grid item xs={1}>
-                                <FlightCard flightResults={flightOffer} showMode={true}/>
+                            <Grid item height={"30%"}>
+                                {<FlightCard flightResults={flightOffer} showMode={true}/>}
                             </Grid>
-                            <Grid item xs={11} direction={"column"} style={{backgroundColor: "brown", }}>
-                                <Grid container xs={12} direction={"column"} >
+                            <Grid item container height={"70%"} direction={"column"} style={{backgroundColor: ""}}>
+                                <Grid container xs={12}>
                                     <FlightItineraryInfo flightOffer={flightOffer} title={"OUTBOUND FLIGHT"}/>
                                     <FlightItineraryInfo flightOffer={flightOffer} title={"RETURN FLIGHT"}/>
                                 </Grid>
