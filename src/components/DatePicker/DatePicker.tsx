@@ -10,6 +10,7 @@ interface DatesPickerProps {
     fieldName: string,
     value: string,
     label: string,
+    disabled?: boolean;
 }
 
 const Empty: React.FC = () => <></>
@@ -36,6 +37,7 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                     data-testid={props.fieldName}
                     label={props.label}
                     onChange={handleDateChange}
+                    disabled={props.disabled}
                     renderInput={
                         (params) => 
                             <TextField
@@ -49,7 +51,7 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                                     ...params.InputProps,
                                     className: homePageStyles.inputDateField
                                 }}
-                                label={props.fieldName}
+                                label={props.label}
                             />
                     }
                     value={props.value} 
