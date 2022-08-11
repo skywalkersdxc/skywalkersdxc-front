@@ -59,7 +59,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   };
 
   const [keyword, setKeyword] = useState('')
-  const [search, setSearch] = useState(defaultAirport ? defaultAirport : '')
+  const [search, setSearch] = useState(defaultAirport || '')
   const [loading, setLoading] = useState(false)
   const [airportsOptions, setAirportsOptions] = useState([]);
 
