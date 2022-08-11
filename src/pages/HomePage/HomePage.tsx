@@ -31,7 +31,7 @@ function HomePage() {
   const { flightOffers, setFlightOffers } = useFlightOffers();
 
   const formik = useFormik<IHomePageFormData>({
-    validateOnChange: false,
+    validateOnChange: true,
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
@@ -59,7 +59,7 @@ function HomePage() {
       passengers: 1,
       departureDate: today.toISOString(),
       returnDate: today.add(3, "days").toISOString(),
-      departureFlight: "",
+      departureFlight: "LAX",
       destinationFlight: "",
     },
     onSubmit: async (values) => {
