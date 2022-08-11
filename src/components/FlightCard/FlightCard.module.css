@@ -29,3 +29,9 @@
 .amountButton {
     font-weight: bold;
 }
+
+.airlineLogo {
+    width: 90%;
+    max-width: 160px;
+    max-height: 50px;
+}

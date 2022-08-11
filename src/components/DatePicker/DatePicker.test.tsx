@@ -48,7 +48,7 @@ describe("DatesPicker: Formik integration", () => {
             }
         };
 
-        render(
+        const { container }  = render(
             <DatesPicker
                 display
                 fieldName="TestPicker"
@@ -57,7 +57,7 @@ describe("DatesPicker: Formik integration", () => {
                 formik={formik}
             />
         )
-        let pickerTextNode = screen.getByLabelText('TestPicker');
+        let pickerTextNode = container.querySelector("input[name='TestPicker']") as Element;
         userEvent.type(pickerTextNode, "08/01/2022{enter}");
         expect(setFieldValue.calledOnceWith("TestPicker")).toBeTruthy();
     });
