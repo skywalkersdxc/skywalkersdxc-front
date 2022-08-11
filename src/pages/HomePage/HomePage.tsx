@@ -31,6 +31,7 @@ function HomePage() {
   const { flightOffers, setFlightOffers } = useFlightOffers();
 
   const formik = useFormik<IHomePageFormData>({
+    validateOnChange: false,
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
@@ -134,6 +135,7 @@ function HomePage() {
                       formik={formik}
                       fieldName="departureFlight"
                       disabled={flightSearchStatus.isLoading}
+                      defaultAirport="LAX"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>

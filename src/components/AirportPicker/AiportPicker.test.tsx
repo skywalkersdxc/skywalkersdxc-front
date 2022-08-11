@@ -73,5 +73,50 @@ describe("Airport Component: Formik integration", () => {
       expect(formik.setFieldValue).not.toHaveBeenCalled();
     }, 2000)
   })
+
+  test("test default value", ()=>{
+    let formik = {
+      setFieldValue: jest.fn(),
+      errors: {},
+    };
+
+    render(
+        <AirportPicker
+            flightType="departure"
+            formik={formik}
+            fieldName="airport-picker-test"
+        />
+    );
+
+    const autoCompleteSearch = screen.getByLabelText("From");
+    expect(autoCompleteSearch).toHaveValue("LAX");
+  })
+
+  test("test change on input", ()=>{
+    let formik = {
+      setFieldValue: jest.fn(),
+      errors: {},
+    };
+
+    render(
+        <AirportPicker
+            flightType="departure"
+            formik={formik}
+            fieldName="airport-picker-test"
+        />
+    );
+
+    const autoCompleteSearch = screen.getByLabelText("From");
+    userEvent.type(autoCompleteSearch, "ATL");
+    setTimeout(()=>{
+      fireEvent.keyDown(autoCompleteSearch, { key: 'ArrowDown' })
+      fireEvent.keyDown(autoCompleteSearch, {key: "Enter"})
+
+      const autoCompleteItem = screen.getByTestId("autocompleteText")
+      expect(autoCompleteItem).toHaveTextContent('ATL (ATLANTA, GA)')
+      expect(formik.setFieldValue).not.toHaveBeenCalled();
+    }, 2000)
+
+  })
 });
 
