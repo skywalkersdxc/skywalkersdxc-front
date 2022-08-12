@@ -59,7 +59,7 @@ function HomePage() {
       passengers: 1,
       departureDate: today.toISOString(),
       returnDate: today.add(3, "days").toISOString(),
-      departureFlight: "",
+      departureFlight: "LAX",
       destinationFlight: "",
     },
     onSubmit: async (values) => {

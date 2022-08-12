@@ -74,7 +74,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   //useEffect used to reset input value after clicking home button 
   useEffect(() => {
     if(!value || value === defaultAirport) {
-      setSearch(defaultAirport || '');
+      setSearch(value);
     } 
   }, [value]);
 
