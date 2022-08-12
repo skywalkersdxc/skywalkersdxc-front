@@ -1,5 +1,5 @@
 import { Home } from "@mui/icons-material";
-import homeButtonStyles from "./HomeButton.module.css";
+import homePageStyles from "../../pages/HomePage/HomePage.module.css";
 
 interface HomeButtonProps {
   onClick?: () => void;
@@ -9,7 +9,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ onClick }) => {
   return (
     <Home
       data-testid="home-button"
-      className={homeButtonStyles.icon}
+      className={homePageStyles.icon}
       onClick={onClick}
     />
   );

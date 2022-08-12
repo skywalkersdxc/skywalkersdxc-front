@@ -1,28 +1,22 @@
-@media screen and (min-width: 600px) {
-    .inputsFlightsContainer {
-        max-width: 400px !important;
-    }
-    .gridContainer {
-        display: flex !important;
-        justify-content: center !important;
-    }
-}
-
 .container {
     background-color: #eef7fd;
     position: relative;
     min-height:100vh;
+    min-width: 100%;
 }
 
 .roundSelect {
     border-radius: 30px;
-    height: 35px;
     display: flex;
 }
 
 .inputDateField {
     border-radius: 30px;
-    padding: 0 20px 0 10px;
+    width: 100%;
+}
+
+.datePickerInput{
+    width: 100%;
 }
 
 .alertErrors{
@@ -37,29 +31,57 @@ svg[data-testid="GroupIcon"] {
     padding-right: 10px;
 }
 
+.icon{
+    font-size: 25px;
+    color: black;
+}
+
 .inputsFlightsContainer {
     background-color: white;
-    margin-top: 36px;
-    margin-left: 16px;
-    padding-top: 0px !important;
     border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.allHomePageGrid {
+    padding: 8px;
+}
+
+.iconContainer {
+    height: 60px;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-weight: 900;
+    margin-bottom: 32px;
+}
+
+.flightForm {
+    width: 100%;
+}
+
+.roundPassContainer {
+    margin-bottom: 24px;
 }
 
 .flightPicker:first-of-type {
     padding-top: 20px;
 }
 
-.datePicker:last-of-type {
-    padding-bottom: 20px;
+.flightPicker{
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
-.flightPicker, .datePicker {
-    padding-left: 0px !important;
-    margin-right: 16px;
+.datePicker {
+    margin: 12px;
 }
 
-.submitButton {
-    margin-left: 0px;
-    margin-top: 8px;
-    margin-bottom: 18px;
+.divider {
+    width: 85%;
+    border-width: 0.01em;
+}
+
+.buttonContainer {
+    padding-top: 14px;
 }
