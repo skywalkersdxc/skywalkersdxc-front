@@ -96,7 +96,7 @@ function HomePage() {
 
           <Grid container item> 
             <Grid container item xs={12} alignContent="flex-end" className={homePageSyles.iconContainer}>
-              <HomeButton onClick={onClickHomeButton}/>
+              <HomeButton onClick={onClickHomeButton} disabled={flightSearchStatus.isLoading} />
             </Grid>
             {flightOffers?.data ? null : (
             <Grid item xs={12}>

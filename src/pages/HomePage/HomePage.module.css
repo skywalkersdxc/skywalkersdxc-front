@@ -36,6 +36,11 @@ svg[data-testid="GroupIcon"] {
     color: black;
 }
 
+.iconButton {
+    padding: 0px;
+    justify-content: start;
+}
+
 .inputsFlightsContainer {
     background-color: white;
     border-radius: 20px;
