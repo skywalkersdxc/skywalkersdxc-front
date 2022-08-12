@@ -184,10 +184,7 @@ function HomePage() {
                       disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
-
                 </Grid>
-
-                {flightOffers?.data ? null : (
                   <Grid container justifyContent="flex-end" item xs={12} className={homePageSyles.buttonContainer}>
                     <Grid lg={4} xs={12} item>
                       <SubmitButton
@@ -196,8 +193,6 @@ function HomePage() {
                       />
                     </Grid>
                   </Grid>
-                )}
-
               </Grid>
             </form>
             {
