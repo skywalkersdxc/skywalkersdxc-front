@@ -1,10 +1,10 @@
-import {Alert, Autocomplete, CircularProgress, FormControl, TextField} from "@mui/material";
+import {Alert, Autocomplete, CircularProgress, FormControl, TextField, Grid} from "@mui/material";
 import { Place, AirplanemodeActive } from "@mui/icons-material";
 import React, {useCallback, useEffect, useState} from "react";
-import styles from "./AirportPicker.module.css";
 import { debounce } from "lodash";
 import { getData } from "./getData"
 import axios from "axios";
+import styles from "../../pages/HomePage/HomePage.module.css"
 
 interface AirportPickerProps {
   flightType: string;
@@ -38,16 +38,16 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
       formik.setFieldValue(fieldName, flight.name);
       return;
     }
-    setSearch('')
+    setSearch("")
   };
 
   const IconComponent: React.FC<IconComponentProps> = ({ type }) => {
     switch (type) {
       case "departure":
       default:
-        return <Place className={styles.icon} />;
+        return <Place className={styles.airportPickerIcon}/>;
       case "destination":
-        return <AirplanemodeActive className={styles.icon} />;
+        return <AirplanemodeActive className={styles.airportPickerIcon}/>;
     }
   };
 
@@ -61,7 +61,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   };
 
   const [keyword, setKeyword] = useState('')
-  const [search, setSearch] = useState(defaultAirport || '')
+  const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
   const [airportsOptions, setAirportsOptions] = useState([]);
 
@@ -100,51 +100,55 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     <div>
       <FormControl
         fullWidth
-        className={styles.container}
         data-testid={fieldName}
       >
-        <IconComponent type={flightType} />
-        <Autocomplete
-          id="autocompleteSearch"
-          data-testid="autocompleteSearch"
-          disabled={disabled}
-          options={airportsOptions}
-          getOptionLabel={(option: Airport) => {
-            return option.name + " (" + option.location + ")"
-          }}
-          loading={loading}
-          isOptionEqualToValue={(option, value) =>
-            option.name === value.name
-          }
-          className={styles.input}
-          onChange={handleFlightChange}
-          disableClearable
-          renderInput={(params) => (
-            <TextField {...params}
-               data-testid="autocompleteText"
-               label={selectLabel(flightType)}
-               onChange={e => {
-                 e.preventDefault()
-                 setSearch(e.target.value);
-               }}
-               inputProps={{
-                 ...params.inputProps,
-                 value: search
-               }}
-               InputProps={{
-                 ...params.InputProps,
-                 endAdornment: (
-                     <React.Fragment>
-                       {loading ? (
-                           <CircularProgress color="inherit" size={20} />
-                       ) : null}
-                       {params.InputProps.endAdornment}
-                     </React.Fragment>
-                 )
-               }}
+        <Grid container>
+          <Grid item xs={2} container justifyContent="center" alignContent="center">
+            <IconComponent type={flightType}/>
+          </Grid>
+          <Grid item xs={10}>
+            <Autocomplete
+              id="autocompleteSearch"
+              data-testid="autocompleteSearch"
+              disabled={disabled}
+              options={airportsOptions}
+              getOptionLabel={(option: Airport) => {
+                return option.name + " (" + option.location + ")"
+              }}
+              loading={loading}
+              isOptionEqualToValue={(option, value) =>
+                option.name === value.name
+              }
+              onChange={handleFlightChange}
+              disableClearable
+              renderInput={(params) => (
+                <TextField {...params}
+                  data-testid="autocompleteText"
+                  label={selectLabel(flightType)}
+                  onChange={e => {
+                    e.preventDefault()
+                    setSearch(e.target.value);
+                  }}
+                  inputProps={{
+                    ...params.inputProps,
+                    value: search
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                        <React.Fragment>
+                          {loading ? (
+                              <CircularProgress color="inherit" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                    )
+                  }}
+                />
+              )}
             />
-          )}
-        />
+          </Grid>
+        </Grid>
       </FormControl>
       {formik.errors[fieldName] && (
         <Alert severity="error">{formik.errors[fieldName]}</Alert>

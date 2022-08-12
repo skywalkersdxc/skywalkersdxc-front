@@ -12,6 +12,7 @@ const FlightInfoComponent: React.FC<{itineraries: ItinerariesProps}> = ({itinera
         <Grid item xs={12} container data-testid="flightInfoComponent">
             <Grid item xs={2} container justifyContent="center" alignItems="center">
                 <img 
+                    width="100%"
                     alt="airlineIcon" 
                     src={svgLogo}
                     onError={(evt: React.SyntheticEvent<HTMLImageElement, Event>) => {

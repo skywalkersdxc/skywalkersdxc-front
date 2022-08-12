@@ -59,7 +59,7 @@ function HomePage() {
       passengers: 1,
       departureDate: today.toISOString(),
       returnDate: today.add(3, "days").toISOString(),
-      departureFlight: "LAX",
+      departureFlight: "",
       destinationFlight: "",
     },
     onSubmit: async (values) => {
@@ -91,27 +91,28 @@ function HomePage() {
 
   return (
     <StyledEngineProvider injectFirst>
-      <Container maxWidth="xl" className={homePageSyles.container}>
-        <Grid container>
-          <Grid item md={12}>
-            <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={2} className={homePageSyles.gridContainer}>
-                <Grid item xs={12}>
-                  <HomeButton onClick={onClickHomeButton} />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h5">
-                    The smartest flight search on the internet
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  md={8}
-                  container
-                  justifyContent="space-between"
-                  spacing={2}
-                >
-                  <Grid item xs={5} md={4}>
+      <Container className={homePageSyles.container}>
+        <Grid container className={homePageSyles.allHomePageGrid}>
+
+          <Grid container item> 
+            <Grid container item xs={12} alignContent="flex-end" className={homePageSyles.iconContainer}>
+              <HomeButton onClick={onClickHomeButton}/>
+            </Grid>
+            {flightOffers?.data ? null : (
+            <Grid item xs={12}>
+              <Typography variant="h5" className={homePageSyles.title}>
+                The smartest flight search on the internet
+              </Typography>
+            </Grid>
+            )}
+          </Grid>
+
+          <Grid container item xs={12} md={7}>
+            <form className={homePageSyles.flightForm} onSubmit={formik.handleSubmit}>
+              <Grid container item xs={12}>
+                
+                <Grid container item xs={12} justifyContent="space-between" className={homePageSyles.roundPassContainer}>
+                  <Grid item xs={6} md={4}>
                     <RoundedSelect
                       formik={formik}
                       optionName="tripType"
@@ -119,7 +120,7 @@ function HomePage() {
                       disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
-                  <Grid item xs={5} md={4}>
+                  <Grid item xs={3}>
                     <RoundedSelect
                       formik={formik}
                       optionName="passengers"
@@ -129,15 +130,15 @@ function HomePage() {
                     />
                   </Grid>
                 </Grid>
+
                 <Grid
                   container
                   item
-                  spacing={2}
                   xs={12}
                   justifyContent="center"
                   className={homePageSyles.inputsFlightsContainer}
                 >
-                  <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
+                  <Grid item xs={12} className={homePageSyles.flightPicker}>
                     <AirportPicker
                       flightType="departure"
                       formik={formik}
@@ -147,7 +148,8 @@ function HomePage() {
                       defaultAirport="LAX"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6} className={homePageSyles.flightPicker}>
+                  
+                  <Grid item xs={12} className={homePageSyles.flightPicker}>
                     <AirportPicker
                       flightType="destination"
                       formik={formik}
@@ -157,7 +159,11 @@ function HomePage() {
                     />
                   </Grid>
 
-                  <Grid item xs={12} sm={6} className={homePageSyles.datePicker}>
+                  <Grid item xs={12} className={homePageSyles.dividerContainer}>
+                      <hr className={homePageSyles.divider}/>
+                  </Grid>
+
+                  <Grid item xs={12} className={homePageSyles.datePicker}>
                     <DatePicker
                       display
                       formik={formik}
@@ -167,7 +173,8 @@ function HomePage() {
                       disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6} className={homePageSyles.datePicker}>
+
+                  <Grid item xs={12} className={homePageSyles.datePicker}>
                     <DatePicker
                       display={formik.values.tripType === constants.tripType[0]}
                       formik={formik}
@@ -177,21 +184,20 @@ function HomePage() {
                       disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
+
                 </Grid>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={2}
-                    className={homePageSyles.submitButton}
-                  >
-                    <Grid item xs={12} sm={8} md={6} lg={3} >
+
+                {flightOffers?.data ? null : (
+                  <Grid container justifyContent="flex-end" item xs={12} className={homePageSyles.buttonContainer}>
+                    <Grid lg={4} xs={12} item>
                       <SubmitButton
                         loading={flightSearchStatus.isLoading}
                         disabled={!formik.isValid}
                       />
                     </Grid>
                   </Grid>
+                )}
+
               </Grid>
             </form>
             {
@@ -201,9 +207,11 @@ function HomePage() {
                 </Alert>
             }
           </Grid>
-          <Grid item md={12} container justifyContent="space-between">
+
+          <Grid item xs={12} md={7} container justifyContent="space-between">
             {flightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item}/>)}
           </Grid>
+
         </Grid>
       </Container>
     </StyledEngineProvider>
