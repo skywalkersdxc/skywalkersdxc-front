@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {FlightResultsProps} from "../../pages/HomePage/interfaces";
 import {Box, Grid, LinearProgress, Typography} from "@mui/material";
-import {aaImgUrlDummy} from "../FlightCard/FlightInfoComponent";
+import {airlineFailoverLogo} from "../FlightCard/FlightInfoComponent";
 import flightCardStyles from "../FlightCard/FlightCard.module.css";
-import {convertDate, timeTravelDiff} from "../../utils/utils";
+import {capitalizeString, convertDate, timeTravelDiff} from "../../utils/utils";
 import moment from "moment";
 import {getAirlineByCodes} from "../../services/FlightDetails.service";
 
@@ -32,7 +32,7 @@ const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer}:
     const Elements = flightOffer.itineraries.map((itinerary, index) => {
         const segment = itinerary.segments[0];
         return (
-            <Grid container flexDirection={"column"}>
+            <Grid container flexDirection={"column"} key={index}>
                 {/* title */}
                 <Grid container>
                     <Box width={'100%'} sx={{border: '1px solid #d6dfe3', backgroundColor: "#f6fbff"}}>
@@ -43,15 +43,13 @@ const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer}:
                 {/* card info */}
                 <Grid item container direction={"row"} marginTop={1}>
                     <Grid xs={2} item container marginTop={1} alignItems={"start"} justifyContent={"flex-end"}>
-                        <img alt="airlineIcon" src={aaImgUrlDummy} width={35} style={{marginRight: "1em"}} />
+                        <img alt="airlineIcon" src={airlineFailoverLogo} width={35} style={{marginRight: "1em"}} />
                     </Grid>
-                    <Grid xs={10}>
-                        <Grid item xs={12} direction={"column"}>
+                    <Grid item xs={10}>
+                        <Grid item container xs={12} direction={"column"}>
                             <Grid item xs={1}>
-                                <Typography variant={"body2"}>
-                                    <Box sx={{ textTransform: 'capitalize'}}>
-                                        {airlines?.get(segment.carrierCode)}
-                                    </Box>
+                                <Typography variant={"body2"} className={flightCardStyles.x}>
+                                    {airlines?.get(segment.carrierCode)}
                                 </Typography>
                             </Grid>
                             <Grid item xs={1}>

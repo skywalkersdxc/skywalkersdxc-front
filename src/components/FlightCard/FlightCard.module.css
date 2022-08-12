@@ -1,7 +1,7 @@
 .containerCard {
     background-color: #ffffff;
-    padding: 0px 10px 0px 10px;
-    margin-bottom: 5px;
+    padding: 0px 10px 10px 10px;
+    margin-bottom: 10px;
     border-radius: 20px;
     margin-left: 5px;
     cursor: pointer;
@@ -18,13 +18,24 @@
 
 .amountContainer {
     padding: 12px;
+    margin-top: 0px;
+    padding-top: 0px;
 }
 
 .dividerAmount {
-    background-color: rgba(0, 0, 0, 0.12);
+    border-width: 0.01em;
     margin-bottom: 12px;
 }
 
 .amountButton {
     font-weight: bold;
+    height: 30px;
+}
+
+.airlineLogo {
+    max-width: 80px;
+}
+
+.x {
+    text-transform: capitalize !important;
 }

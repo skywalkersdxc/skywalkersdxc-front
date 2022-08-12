@@ -4,18 +4,29 @@ import { convertDate, timeTravelDiff } from "../../utils/utils"
 import flightCardStyles from "./FlightCard.module.css"
 import React from "react";
 
-export const aaImgUrlDummy = "https://www.aa.com/content/images/homepage/mobile-hero/en_US/Airplane-1.png"
 export type FlightInfoComponentProps = {
     itineraries: ItinerariesProps,
     passengers?: number
 };
 
+export const airlineFailoverLogo = "https://upload.wikimedia.org/wikipedia/commons/2/23/Flugzeug_mit_Nase_nach_oben.svg";
+
 const FlightInfoComponent: React.FC<FlightInfoComponentProps> = ({itineraries}: FlightInfoComponentProps) => {
-    const {departure, arrival} = itineraries
+    const {departure, arrival, carrierCode} = itineraries;
+    const svgLogo = `https://airlinecodes.info/airlinelogos/${carrierCode}.svg`;
+
     return (
         <Grid item xs={12} container data-testid="flightInfoComponent">
             <Grid item xs={2} container justifyContent="center" alignItems="center">
-                <img alt="airlineIcon" src={aaImgUrlDummy} width={40}/>
+                <img
+                    width="100%"
+                    alt="airlineIcon"
+                    src={svgLogo}
+                    onError={(evt: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                        evt.currentTarget.src = airlineFailoverLogo
+                    }}
+                    className={flightCardStyles.airlineLogo}
+                />
             </Grid>
             <Grid item xs={10} container className={flightCardStyles.originDestiny}>
                 <Grid item xs={12} container justifyContent="space-between">

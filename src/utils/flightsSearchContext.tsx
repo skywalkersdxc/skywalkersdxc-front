@@ -6,7 +6,7 @@ interface IFlightsSearchContext {
     setFlightOffers: React.Dispatch<React.SetStateAction<IFlightOffers>>
 }
 
-const Context =  createContext<IFlightsSearchContext>({} as IFlightsSearchContext);
+export const Context =  createContext<IFlightsSearchContext>({} as IFlightsSearchContext);
 
 interface ContextProps {
     children: JSX.Element | JSX.Element[];

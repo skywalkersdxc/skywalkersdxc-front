@@ -20,9 +20,9 @@ type FlightCardProps = {
 const FlightCard: React.FC<FlightCardProps> = ({flightResults, showMode} : FlightCardProps) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
-
+    let randomString = (Math.random() + 1).toString(36).substring(7);
    return (
-    <Grid data-testid="flightCard" key={flightResults.id} container className={flightCardStyles.containerCard} xs={12}>
+       <Grid data-testid="flightCard" key={randomString + flightResults.id} container item className={flightCardStyles.containerCard} xs={12}>
         {flightResults.itineraries.map((item) => <FlightInfoComponent key={item.duration} itineraries={item.segments[0]}/>)}
         {
             !showMode ?
@@ -38,7 +38,7 @@ const FlightCard: React.FC<FlightCardProps> = ({flightResults, showMode} : Fligh
                     </Grid>
                 </Grid>
                 :
-                <Grid container xs={12}>
+                <Grid container item xs={12}>
                     <Grid item container xs={12} alignItems={"center"}>
                         <Typography id="modal-modal-description">
                             Passengers: {flightResults.passengers}

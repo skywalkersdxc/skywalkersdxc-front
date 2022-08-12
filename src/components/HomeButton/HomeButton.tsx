@@ -1,27 +1,22 @@
 import { Home } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import homeButtonStyles from "./HomeButton.module.css";
+import { Button } from "@mui/material";
+import homePageStyles from "../../pages/HomePage/HomePage.module.css";
 
 interface HomeButtonProps {
-  isHomePage?: boolean;
+  onClick?: () => void;
+  disabled?: boolean;
 }
 
-const HomeButton: React.FC<HomeButtonProps> = ({ isHomePage }) => {
-  const navigate = useNavigate();
-
-  const handleHomeButton = () => {
-    if (isHomePage) {
-      return;
-    }
-    navigate("/");
-  };
-
+const HomeButton: React.FC<HomeButtonProps> = ({ onClick, disabled }) => {
   return (
-    <Home
+    <Button
+      className={homePageStyles.iconButton}
+      disabled={disabled}
+      onClick={onClick}
       data-testid="home-button"
-      className={homeButtonStyles.icon}
-      onClick={handleHomeButton}
-    />
+    >
+      <Home className={homePageStyles.icon} />
+    </Button>
   );
 };
 

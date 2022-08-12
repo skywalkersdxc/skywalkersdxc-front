@@ -25,12 +25,12 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
             data-testid={"modalFlightDetails"}
         >
             <Fade in={open}>
-                <Grid container className={flightDetailsModalStyles.container} direction={"column"} xs={12} wrap="nowrap" sx={{ overflow: "auto" }}>
+                <Grid container item className={flightDetailsModalStyles.container} direction={"column"} xs={12} wrap="nowrap" sx={{ overflow: "auto" }}>
                     {/* head */ }
                     <Grid item xs={1}>
                         <Grid item container>
                             <Grid container item xs={2} alignItems={"center"}>
-                                <HomeButton isHomePage={false}/>
+                                <HomeButton />
                             </Grid>
                             <Grid item container xs={7} alignItems={"center"}>
                                 <Typography id="modal-modal-description">
@@ -50,12 +50,12 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
 
                     {/* content */ }
                     <Grid item container xs={10}>
-                        <Grid container direction={"column"} xs={12}>
+                        <Grid container direction={"column"}>
                             <Grid item height={"30%"}>
                                 {<FlightCard flightResults={flightOffer} showMode={true}/>}
                             </Grid>
                             <Grid item container height={"70%"} direction={"column"}>
-                                <Grid container xs={12}>
+                                <Grid container item xs={12}>
                                     <FlightItineraryInfo flightOffer={flightOffer}/>
                                 </Grid>
                             </Grid>

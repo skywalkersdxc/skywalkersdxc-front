@@ -2,6 +2,7 @@ import React from 'react';
 import Router from './router/Router';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from "./utils/theme"
+import './index.css';
 
 function App() {
   return (

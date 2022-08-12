@@ -24,3 +24,7 @@ export const timeTravelDiff = (departure: string, arrival: string) => {
     minutes = minutes % 60;
     return `${hours ? hours + "h" : ""} ${minutes ? minutes + "m" : "" }`
 }
+
+export const capitalizeString = (text: string): string => {
+    return text.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+}

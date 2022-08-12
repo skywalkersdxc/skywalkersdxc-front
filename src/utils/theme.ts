@@ -15,6 +15,7 @@ const theme = createTheme({
                 outlined: {
                     backgroundColor: "#ffffff",
                     borderRadius: "30px",
+                    maxHeight: "18px"
                 },
                 standard: {
                     backgroundColor: "#ffffff",
@@ -74,6 +75,10 @@ const theme = createTheme({
                     "&:focus .MuiOutlinedInput-notchedOutline": {
                         borderColor: colors.primary.main
                     }
+                },
+                input: {
+                    paddingTop: "10px",
+                    paddingBottom: "10px"
                 }
             }
         },
@@ -92,6 +97,13 @@ const theme = createTheme({
             styleOverrides: {
                 colorPrimary: {
                     color: "#FFFFFF"
+                }
+            }
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    width: "100%"
                 }
             }
         }

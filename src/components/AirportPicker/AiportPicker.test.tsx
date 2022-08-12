@@ -10,6 +10,7 @@ describe("AiportPicker component", () => {
     render(
       <AirportPicker
         flightType="departure"
+        value=""
         formik={{
           errors: {},
         }}
@@ -34,6 +35,7 @@ describe("Airport Component: Formik integration", () => {
       <AirportPicker
         flightType="departure"
         formik={formik}
+        value=""
         fieldName="airport-picker-test"
       />
     );
@@ -57,6 +59,7 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
+            value=""
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
@@ -72,6 +75,53 @@ describe("Airport Component: Formik integration", () => {
       expect(autoCompleteItem).toHaveTextContent('No options')
       expect(formik.setFieldValue).not.toHaveBeenCalled();
     }, 2000)
+  })
+
+  test("test default value", ()=>{
+    let formik = {
+      setFieldValue: jest.fn(),
+      errors: {},
+    };
+
+    render(
+        <AirportPicker
+            flightType="departure"
+            formik={formik}
+            fieldName="airport-picker-test"
+            value=""
+        />
+    );
+
+    const autoCompleteSearch = screen.getByLabelText("From");
+    expect(autoCompleteSearch).toHaveValue("LAX");
+  })
+
+  test("test change on input", ()=>{
+    let formik = {
+      setFieldValue: jest.fn(),
+      errors: {},
+    };
+
+    render(
+        <AirportPicker
+            flightType="departure"
+            formik={formik}
+            fieldName="airport-picker-test"
+            value=""
+        />
+    );
+
+    const autoCompleteSearch = screen.getByLabelText("From");
+    userEvent.type(autoCompleteSearch, "ATL");
+    setTimeout(()=>{
+      fireEvent.keyDown(autoCompleteSearch, { key: 'ArrowDown' })
+      fireEvent.keyDown(autoCompleteSearch, {key: "Enter"})
+
+      const autoCompleteItem = screen.getByTestId("autocompleteText")
+      expect(autoCompleteItem).toHaveTextContent('ATL (ATLANTA, GA)')
+      expect(formik.setFieldValue).not.toHaveBeenCalled();
+    }, 2000)
+
   })
 });
 

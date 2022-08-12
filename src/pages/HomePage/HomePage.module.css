@@ -1,17 +1,8 @@
-@media screen and (min-width: 600px) {
-    .inputsFlightsContainer {
-        max-width: 400px !important;
-    }
-    .gridContainer {
-        display: flex !important;
-        justify-content: center !important;
-    }
-}
-
 .container {
     background-color: #eef7fd;
     position: relative;
     min-height:100vh;
+    min-width: 100%;
 }
 
 .containerX {
@@ -20,13 +11,20 @@
 
 .roundSelect {
     border-radius: 30px;
-    height: 35px;
     display: flex;
+}
+
+.containerFlightCardsHomePage {
+    margin-top: 10px;
 }
 
 .inputDateField {
     border-radius: 30px;
-    padding: 0 20px 0 10px;
+    width: 100%;
+}
+
+.datePickerInput{
+    width: 100%;
 }
 
 .alertErrors{
@@ -38,26 +36,85 @@ div[data-testid="passengers"] div[role="button"] {
 }
 
 svg[data-testid="GroupIcon"] {
-    padding-right: 10px;
+    padding-right: 6px;
+}
+
+.icon{
+    font-size: 25px;
+    color: black;
+}
+
+.iconButton {
+    padding: 0px;
+    justify-content: start;
+    cursor: pointer;
+}
+
+.iconButton:hover, .iconButton:focus, .iconButton:active {
+    background-color: transparent;
+}
+
+.iconButton span {
+    display: none;
 }
 
 .inputsFlightsContainer {
     background-color: white;
-    margin-top: 36px;
-    margin-left: 16px;
-    padding-top: 0px !important;
     border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.allHomePageGrid {
+    padding: 8px;
+}
+
+.iconContainer {
+    height: 60px;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-weight: 900;
+    margin-bottom: 32px;
+}
+
+.flightForm {
+    width: 100%;
+}
+
+.roundPassContainer {
+    margin-bottom: 24px;
 }
 
 .flightPicker:first-of-type {
     padding-top: 20px;
+    margin-bottom: 10px
 }
 
-.datePicker:last-of-type {
-    padding-bottom: 20px;
+.flightPicker{
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
 .flightPicker, .datePicker {
+    margin: 12px;
     padding-left: 0px !important;
     margin-right: 16px;
+}
+
+.divider {
+    border-width: 0.01em;
+}
+
+.dividerContainer {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.buttonContainer {
+    padding-top: 14px;
+}
+
+.airportPickerIcon {
+    padding-bottom: 16px;
 }
