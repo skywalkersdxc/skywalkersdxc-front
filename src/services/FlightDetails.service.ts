@@ -9,7 +9,7 @@ export interface IAirlineInfo {
 }
 
 export interface IAirlineRequestResponse {
-    data: IAirlineInfo[] | string,
+    data: IAirlineInfo[],
     meta?: {
         count: number,
         links: {
@@ -18,8 +18,11 @@ export interface IAirlineRequestResponse {
     };
 }
 
-export const getAirlineByCode = (codes: string) => {
-    return axios.get(`${process.env.REACT_APP_API_URL}/airlines?airlinesCodes=${codes}`)
+/**
+ * @param codes - carrier codes in iata format separated by commas
+ */
+export const getAirlineByCodes = (codes: string) : Promise<IAirlineRequestResponse> => {
+    return axios.get(`${process.env.REACT_APP_API_URL}/airlines?airlineCodes=${codes}`)
         .then(handleResponse)
         .then(data => data as IAirlineRequestResponse);
 }

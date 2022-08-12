@@ -1,26 +1,42 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {FlightResultsProps} from "../../pages/HomePage/interfaces";
 import {Box, Grid, LinearProgress, Typography} from "@mui/material";
 import {aaImgUrlDummy} from "../FlightCard/FlightInfoComponent";
 import flightCardStyles from "../FlightCard/FlightCard.module.css";
 import {convertDate, timeTravelDiff} from "../../utils/utils";
 import moment from "moment";
+import {getAirlineByCodes} from "../../services/FlightDetails.service";
 
 type FlightItinerarieInfoProps = {
     flightOffer: FlightResultsProps,
-    title?: string,
 };
 
-const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer, title}: FlightItinerarieInfoProps) => {
-    const IteneraryTitle = ["OUTBOUND", "RETURN"];
+const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer}: FlightItinerarieInfoProps) => {
+    const [airlines, setAirlines] = useState<Map<string, string> | null>(null);
+    const {passengers} = flightOffer;
+    const ItineraryTitle = ["OUTBOUND", "RETURN"];
 
-    const Elements = flightOffer.itineraries.map((value, index) => {
+    const involvedCarrierCodes: string[] = flightOffer.itineraries
+        .map((itinerary) => itinerary.segments[0].carrierCode)
+    const involvedCarrierCodesDistinct = Array.from(new Set(involvedCarrierCodes)).join(',');
+
+    useEffect(()=> {
+        getAirlineByCodes(involvedCarrierCodesDistinct)
+            .then(({data}) =>
+                setAirlines(new Map(
+                    data.map((airline) => [airline.iataCode, airline.businessName])
+                ))
+            )
+    }, []);
+
+    const Elements = flightOffer.itineraries.map((itinerary, index) => {
+        const segment = itinerary.segments[0];
         return (
             <Grid container flexDirection={"column"}>
                 {/* title */}
                 <Grid container>
                     <Box width={'100%'} sx={{border: '1px solid #d6dfe3', backgroundColor: "#f6fbff"}}>
-                        <Typography sx={{color: "#8399a9", p: "0.5em"}} > {IteneraryTitle[index] + " FLIGHT"} </Typography>
+                        <Typography sx={{color: "#8399a9", p: "0.5em"}} > {ItineraryTitle[index] + " FLIGHT"} </Typography>
                     </Box>
                 </Grid>
 
@@ -32,8 +48,10 @@ const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer, 
                     <Grid xs={10}>
                         <Grid item xs={12} direction={"column"}>
                             <Grid item xs={1}>
-                                <Typography variant={"body1"}>
-                                    aereolinea
+                                <Typography variant={"body2"}>
+                                    <Box sx={{ textTransform: 'capitalize'}}>
+                                        {airlines?.get(segment.carrierCode)}
+                                    </Box>
                                 </Typography>
                             </Grid>
                             <Grid item xs={1}>
@@ -69,68 +87,13 @@ const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer, 
                         </Grid>
                     </Grid>
                 </Grid>
-
             </Grid>
         );
     });
 
-    const segment = flightOffer.itineraries[0].segments[0];
-    const {passengers} = flightOffer;
     return (
-        <Grid container flexDirection={"column"}>
-            {/* title */}
-            <Grid container>
-                <Box width={'100%'} sx={{border: '1px solid #d6dfe3', backgroundColor: "#f6fbff"}}>
-                    <Typography sx={{color: "#8399a9", p: "0.5em"}} > {title ? title : " FLIGHT"} </Typography>
-                </Box>
-            </Grid>
-
-            {/* card info */}
-            <Grid item container direction={"row"} marginTop={1}>
-                <Grid xs={2} item container marginTop={1} alignItems={"start"} justifyContent={"flex-end"}>
-                    <img alt="airlineIcon" src={aaImgUrlDummy} width={35} style={{marginRight: "1em"}} />
-                </Grid>
-                <Grid xs={10}>
-                    <Grid item xs={12} direction={"column"}>
-                        <Grid item xs={1}>
-                            <Typography variant={"body1"}>
-                                aereolinea
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant={"body2"} gutterBottom>
-                                {timeTravelDiff(segment.departure.at, segment.arrival.at)}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Box>
-                                <LinearProgress variant="determinate" value={90} className={flightCardStyles.flightProgress}/>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant={"body2"} gutterBottom>
-                                {moment(segment.departure.at).format('MMM DD,ddd')}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant={"body2"} gutterBottom>
-                                {convertDate(segment.departure.at)} - {convertDate(segment.arrival.at)}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant={"body2"} gutterBottom>
-                                {segment.departure.iataCode} → {segment.arrival.iataCode}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant={"body2"} gutterBottom>
-                                Passengers: {passengers}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-
+        <Grid container>
+            {Elements}
         </Grid>
     );
 }

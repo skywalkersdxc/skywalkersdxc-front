@@ -22,6 +22,7 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
             open={open}
             onClose={handleClose}
             aria-describedby="modal-modal-description"
+            data-testid={"modalFlightDetails"}
         >
             <Fade in={open}>
                 <Grid container className={flightDetailsModalStyles.container} direction={"column"} xs={12} wrap="nowrap" sx={{ overflow: "auto" }}>
@@ -55,8 +56,7 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
                             </Grid>
                             <Grid item container height={"70%"} direction={"column"}>
                                 <Grid container xs={12}>
-                                    <FlightItineraryInfo flightOffer={flightOffer} title={"OUTBOUND FLIGHT"}/>
-                                    <FlightItineraryInfo flightOffer={flightOffer} title={"RETURN FLIGHT"}/>
+                                    <FlightItineraryInfo flightOffer={flightOffer}/>
                                 </Grid>
                             </Grid>
                         </Grid>
