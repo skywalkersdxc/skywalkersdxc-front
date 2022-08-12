@@ -15,7 +15,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({ onClick, disabled }) => {
       onClick={onClick}
       data-testid="home-button"
     >
-      <Home data-testid="home-button" className={homePageStyles.icon} />
+      <Home className={homePageStyles.icon} />
     </Button>
   );
 };
