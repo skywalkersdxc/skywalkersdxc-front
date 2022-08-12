@@ -28,7 +28,7 @@ div[data-testid="passengers"] div[role="button"] {
 }
 
 svg[data-testid="GroupIcon"] {
-    padding-right: 10px;
+    padding-right: 6px;
 }
 
 .icon{
@@ -66,6 +66,7 @@ svg[data-testid="GroupIcon"] {
 
 .flightPicker:first-of-type {
     padding-top: 20px;
+    margin-bottom: 10px
 }
 
 .flightPicker{
@@ -78,10 +79,18 @@ svg[data-testid="GroupIcon"] {
 }
 
 .divider {
-    width: 85%;
     border-width: 0.01em;
+}
+
+.dividerContainer {
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 .buttonContainer {
     padding-top: 14px;
+}
+
+.airportPickerIcon {
+    padding-bottom: 16px;
 }

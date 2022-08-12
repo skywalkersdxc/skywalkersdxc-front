@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import { debounce } from "lodash";
 import { getData } from "./getData"
 import axios from "axios";
+import styles from "../../pages/HomePage/HomePage.module.css"
 
 interface AirportPickerProps {
   flightType: string;
@@ -44,9 +45,9 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     switch (type) {
       case "departure":
       default:
-        return <Place />;
+        return <Place className={styles.airportPickerIcon}/>;
       case "destination":
-        return <AirplanemodeActive />;
+        return <AirplanemodeActive className={styles.airportPickerIcon}/>;
     }
   };
 
@@ -103,9 +104,9 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
       >
         <Grid container>
           <Grid item xs={2} container justifyContent="center" alignContent="center">
-            <IconComponent type={flightType} />
+            <IconComponent type={flightType}/>
           </Grid>
-          <Grid item xs={10} md={9}>
+          <Grid item xs={10}>
             <Autocomplete
               id="autocompleteSearch"
               data-testid="autocompleteSearch"

@@ -93,6 +93,7 @@ function HomePage() {
     <StyledEngineProvider injectFirst>
       <Container className={homePageSyles.container}>
         <Grid container className={homePageSyles.allHomePageGrid}>
+
           <Grid container item> 
             <Grid container item xs={12} alignContent="flex-end" className={homePageSyles.iconContainer}>
               <HomeButton onClick={onClickHomeButton}/>
@@ -119,7 +120,7 @@ function HomePage() {
                       disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
-                  <Grid item xs={4} md={3}>
+                  <Grid item xs={3}>
                     <RoundedSelect
                       formik={formik}
                       optionName="passengers"
@@ -158,7 +159,7 @@ function HomePage() {
                     />
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid item xs={12} className={homePageSyles.dividerContainer}>
                       <hr className={homePageSyles.divider}/>
                   </Grid>
 

@@ -38,7 +38,7 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                     <Grid item xs={2} container justifyContent="center">
                         <CalendarTodayIcon/>
                     </Grid>
-                    <Grid item xs={10} md={9}>
+                    <Grid item xs={10}>
                         <MobileDatePicker
                             data-testid={props.fieldName}
                             label={props.label}
