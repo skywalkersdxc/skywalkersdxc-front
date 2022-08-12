@@ -36,6 +36,20 @@ svg[data-testid="GroupIcon"] {
     color: black;
 }
 
+.iconButton {
+    padding: 0px;
+    justify-content: start;
+    cursor: pointer;
+}
+
+.iconButton:hover, .iconButton:focus, .iconButton:active {
+    background-color: transparent;
+}
+
+.iconButton span {
+    display: none;
+}
+
 .inputsFlightsContainer {
     background-color: white;
     border-radius: 20px;

@@ -59,7 +59,7 @@ function HomePage() {
       passengers: 1,
       departureDate: today.toISOString(),
       returnDate: today.add(3, "days").toISOString(),
-      departureFlight: "",
+      departureFlight: "LAX",
       destinationFlight: "",
     },
     onSubmit: async (values) => {
@@ -96,7 +96,7 @@ function HomePage() {
 
           <Grid container item> 
             <Grid container item xs={12} alignContent="flex-end" className={homePageSyles.iconContainer}>
-              <HomeButton onClick={onClickHomeButton}/>
+              <HomeButton onClick={onClickHomeButton} disabled={flightSearchStatus.isLoading} />
             </Grid>
             {flightOffers?.data ? null : (
             <Grid item xs={12}>
@@ -184,10 +184,7 @@ function HomePage() {
                       disabled={flightSearchStatus.isLoading}
                     />
                   </Grid>
-
                 </Grid>
-
-                {flightOffers?.data ? null : (
                   <Grid container justifyContent="flex-end" item xs={12} className={homePageSyles.buttonContainer}>
                     <Grid lg={4} xs={12} item>
                       <SubmitButton
@@ -196,8 +193,6 @@ function HomePage() {
                       />
                     </Grid>
                   </Grid>
-                )}
-
               </Grid>
             </form>
             {
