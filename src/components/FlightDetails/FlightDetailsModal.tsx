@@ -24,10 +24,10 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
             aria-describedby="modal-modal-description"
         >
             <Fade in={open}>
-                <Grid container className={flightDetailsModalStyles.container} direction={"column"} xs={12}>
+                <Grid container className={flightDetailsModalStyles.container} direction={"column"} xs={12} wrap="nowrap" sx={{ overflow: "auto" }}>
                     {/* head */ }
-                    <Grid item  xs={1}>
-                        <Grid item container >
+                    <Grid item xs={1}>
+                        <Grid item container>
                             <Grid container item xs={2} alignItems={"center"}>
                                 <HomeButton isHomePage={false}/>
                             </Grid>
@@ -53,7 +53,7 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
                             <Grid item height={"30%"}>
                                 {<FlightCard flightResults={flightOffer} showMode={true}/>}
                             </Grid>
-                            <Grid item container height={"70%"} direction={"column"} style={{backgroundColor: ""}}>
+                            <Grid item container height={"70%"} direction={"column"}>
                                 <Grid container xs={12}>
                                     <FlightItineraryInfo flightOffer={flightOffer} title={"OUTBOUND FLIGHT"}/>
                                     <FlightItineraryInfo flightOffer={flightOffer} title={"RETURN FLIGHT"}/>
@@ -63,7 +63,7 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
                     </Grid>
 
                     {/* footer */ }
-                    <Grid item container direction={"column"} style={{backgroundColor:""}}>
+                    <Grid item container xs={1} direction={"column"} marginTop={"0.1em"}>
                         <Divider className={flightDetailsModalStyles.dividerAmount} />
                         <Grid item container direction={'row'} marginTop={"0.8em"}>
                              <Grid item xs={6}>
