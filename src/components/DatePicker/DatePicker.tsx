@@ -1,8 +1,9 @@
-import { Alert, FormControl, TextField }  from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { Alert, FormControl, Grid, TextField }  from "@mui/material";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment, { Moment } from "moment";
 import homePageStyles from "../../pages/HomePage/HomePage.module.css";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 interface DatesPickerProps {
     display: boolean,
@@ -33,37 +34,45 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
         <FormControl fullWidth
         data-testid={props.fieldName}>
             <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DatePicker
-                    data-testid={props.fieldName}
-                    label={props.label}
-                    onChange={handleDateChange}
-                    disabled={props.disabled}
-                    renderInput={
-                        (params) => 
-                            <TextField
-                                {...params}
-                                inputProps={{
-                                    ...params.inputProps, 
-                                    readOnly: true, 
-                                }}
-                                name={props.fieldName}
-                                InputProps={{
-                                    ...params.InputProps,
-                                    className: homePageStyles.inputDateField
-                                }}
-                                label={props.label}
-                            />
-                    }
-                    value={props.value} 
-                    closeOnSelect
-                    disablePast
-                    minDate={today}
-                />
-                {formik.errors[props.fieldName] && 
-                    <Alert severity="error">
-                        {formik.errors[props.fieldName]}
-                    </Alert>
-                }
+                <Grid container>
+                    <Grid item xs={2} container justifyContent="center">
+                        <CalendarTodayIcon/>
+                    </Grid>
+                    <Grid item xs={10} md={9}>
+                        <MobileDatePicker
+                            data-testid={props.fieldName}
+                            label={props.label}
+                            onChange={handleDateChange}
+                            disabled={props.disabled}
+                            renderInput={
+                                (params) =>
+                                    <TextField
+                                        {...params}
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            readOnly: true,
+                                        }}
+                                        name={props.fieldName}
+                                        InputProps={{
+                                            ...params.InputProps,
+                                            className: homePageStyles.inputDateField
+                                        }}
+                                        label={props.label}
+                                    />
+                            }
+                            value={props.value}
+                            closeOnSelect
+                            disablePast
+                            minDate={today}
+                            className={homePageStyles.datePickerInput}
+                        />
+                        {formik.errors[props.fieldName] &&
+                            <Alert severity="error">
+                                {formik.errors[props.fieldName]}
+                            </Alert>
+                        }
+                    </Grid>
+                </Grid>
             </LocalizationProvider>
         </FormControl>
     )
