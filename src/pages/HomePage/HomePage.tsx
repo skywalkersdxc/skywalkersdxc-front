@@ -145,10 +145,12 @@ function HomePage() {
                       fieldName="departureFlight"
                       disabled={flightSearchStatus.isLoading}
                       value={formik.values.departureFlight}
-                      defaultAirport="LAX"
+                      defaultAirport={{
+                        name: "LAX",
+                        longName: "LOS ANGELES INTL"
+                      }}
                     />
                   </Grid>
-                  
                   <Grid item xs={12} className={homePageSyles.flightPicker}>
                     <AirportPicker
                       flightType="destination"
