@@ -12,7 +12,10 @@ interface AirportPickerProps {
   fieldName: string;
   value: string;
   disabled?: boolean;
-  defaultAirport?: string;
+  defaultAirport?: {
+    name: string,
+    longName: string
+  };
 }
 
 interface IconComponentProps {
@@ -21,6 +24,7 @@ interface IconComponentProps {
 
 interface Airport {
   name: string;
+  longName: string;
   location: string;
 }
 
@@ -34,6 +38,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
 }: AirportPickerProps) => {
   const handleFlightChange = (event: any, flight: Airport) => {
     if (flight){
+      setLabel(flight.longName);
       setSearch(flight.name);
       formik.setFieldValue(fieldName, flight.name);
       return;
@@ -61,9 +66,10 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   };
 
   const [keyword, setKeyword] = useState('')
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState(defaultAirport?.name || '')
   const [loading, setLoading] = useState(false)
   const [airportsOptions, setAirportsOptions] = useState([]);
+  const [label, setLabel] = useState(defaultAirport?.longName || '');
 
   const debounceLoadData = useCallback(debounce(setKeyword, 1000), []);
 
@@ -71,9 +77,10 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     debounceLoadData(search);
   }, [search]);
 
+
   //useEffect used to reset input value after clicking home button 
   useEffect(() => {
-    if(!value || value === defaultAirport) {
+    if(!value || value === defaultAirport?.name) {
       setSearch(value);
     } 
   }, [value]);
@@ -96,6 +103,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     };
   }, [keyword]);
 
+
   return (
     <div>
       <FormControl
@@ -112,13 +120,12 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
               data-testid="autocompleteSearch"
               disabled={disabled}
               options={airportsOptions}
-              getOptionLabel={(option: Airport) => {
-                return option.name + " (" + option.location + ")"
-              }}
+              getOptionLabel={(option: Airport) => `${option.longName}, ${option.location} [${option.name}]` }
               loading={loading}
               isOptionEqualToValue={(option, value) =>
                 option.name === value.name
               }
+              className={styles.input}
               onChange={handleFlightChange}
               disableClearable
               renderInput={(params) => (
@@ -128,10 +135,11 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
                   onChange={e => {
                     e.preventDefault()
                     setSearch(e.target.value);
+                    setLabel(e.target.value);
                   }}
                   inputProps={{
                     ...params.inputProps,
-                    value: search
+                      value: label
                   }}
                   InputProps={{
                     ...params.InputProps,
