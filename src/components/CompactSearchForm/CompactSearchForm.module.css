@@ -1,0 +1,20 @@
+.parentContainer {
+    padding: 0px;
+}
+
+.inputsFlightsContainer {
+    background-color: white;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    padding: 0 2px;
+}
+
+.flightPicker {
+    padding-top: 20px;
+    margin-bottom: 10px
+}
+
+.separator {
+    border-top: 1px solid #bbb;
+    width: 90%
+}

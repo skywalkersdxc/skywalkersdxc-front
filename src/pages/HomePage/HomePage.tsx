@@ -1,5 +1,5 @@
 import { Alert, Container, Grid, Typography } from "@mui/material";
-import homePageSyles from "./HomePage.module.css";
+import homePageStyles from "./HomePage.module.css";
 import {
   RoundedSelect,
   HomeButton,
@@ -18,6 +18,7 @@ import { searchFlight, transformFormData } from "../../logic/searchFlight";
 import { useFlightOffers } from "../../utils/flightsSearchContext";
 import { IFlightSearchStatus, IHomePageFormData, FlightResultsProps } from "./interfaces";
 import { IFlightOffers } from "../../intefaces/flights";
+import {CompactSearchForm} from "../../components/CompactSearchForm/CompactSearchForm";
 
 function HomePage() {
   const today = moment()
@@ -91,16 +92,16 @@ function HomePage() {
 
   return (
     <StyledEngineProvider injectFirst>
-      <Container className={homePageSyles.container}>
-        <Grid container className={homePageSyles.allHomePageGrid}>
+      <Container className={homePageStyles.container}>
+        <Grid container className={homePageStyles.allHomePageGrid}>
 
           <Grid container item> 
-            <Grid container item xs={12} alignContent="flex-end" className={homePageSyles.iconContainer}>
+            <Grid container item xs={12} alignContent="flex-end" className={homePageStyles.iconContainer}>
               <HomeButton onClick={onClickHomeButton} disabled={flightSearchStatus.isLoading} />
             </Grid>
             {flightOffers?.data ? null : (
             <Grid item xs={12}>
-              <Typography variant="h5" className={homePageSyles.title}>
+              <Typography variant="h5" className={homePageStyles.title}>
                 The smartest flight search on the internet
               </Typography>
             </Grid>
@@ -108,10 +109,9 @@ function HomePage() {
           </Grid>
 
           <Grid container item xs={12} md={7}>
-            <form className={homePageSyles.flightForm} onSubmit={formik.handleSubmit}>
+            <form className={homePageStyles.flightForm} onSubmit={formik.handleSubmit}>
               <Grid container item xs={12}>
-                
-                <Grid container item xs={12} justifyContent="space-between" className={homePageSyles.roundPassContainer}>
+                <Grid container item xs={12} justifyContent="space-between" className={homePageStyles.roundPassContainer}>
                   <Grid item xs={6} md={4}>
                     <RoundedSelect
                       formik={formik}
@@ -131,77 +131,86 @@ function HomePage() {
                   </Grid>
                 </Grid>
 
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  justifyContent="center"
-                  className={homePageSyles.inputsFlightsContainer}
-                >
-                  <Grid item xs={12} className={homePageSyles.flightPicker}>
-                    <AirportPicker
-                      flightType="departure"
-                      formik={formik}
-                      fieldName="departureFlight"
-                      disabled={flightSearchStatus.isLoading}
-                      value={formik.values.departureFlight}
-                      defaultAirport={{
-                        name: "LAX",
-                        longName: "LOS ANGELES INTL"
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} className={homePageSyles.flightPicker}>
-                    <AirportPicker
-                      flightType="destination"
-                      formik={formik}
-                      fieldName="destinationFlight"
-                      disabled={flightSearchStatus.isLoading}
-                      value={formik.values.destinationFlight}
-                    />
-                  </Grid>
+                {
+                  flightOffers?.data
+                      ? <CompactSearchForm
+                          formik={formik}
+                      />
+                      : <Grid
+                          container
+                          item
+                          xs={12}
+                          justifyContent="center"
+                          className={homePageStyles.inputsFlightsContainer}
+                      >
+                        <Grid item xs={12} className={homePageStyles.flightPicker}>
+                          <AirportPicker
+                              flightType="departure"
+                              formik={formik}
+                              fieldName="departureFlight"
+                              disabled={flightSearchStatus.isLoading}
+                              value={formik.values.departureFlight}
+                              defaultAirport={{
+                                name: "LAX",
+                                longName: "LOS ANGELES INTL"
+                              }}
+                          />
+                        </Grid>
+                        <Grid item xs={12} className={homePageStyles.flightPicker}>
+                          <AirportPicker
+                              flightType="destination"
+                              formik={formik}
+                              fieldName="destinationFlight"
+                              disabled={flightSearchStatus.isLoading}
+                              value={formik.values.destinationFlight}
+                          />
+                        </Grid>
 
-                  <Grid item xs={12} className={homePageSyles.dividerContainer}>
-                      <hr className={homePageSyles.divider}/>
-                  </Grid>
+                        <Grid item xs={12} className={homePageStyles.dividerContainer}>
+                          <hr className={homePageStyles.divider}/>
+                        </Grid>
 
-                  <Grid item xs={12} className={homePageSyles.datePicker}>
-                    <DatePicker
-                      display
-                      formik={formik}
-                      fieldName="departureDate"
-                      value={formik.values.departureDate}
-                      label="Departure Date"
-                      disabled={flightSearchStatus.isLoading}
-                    />
-                  </Grid>
+                        <Grid item xs={12} className={homePageStyles.datePicker}>
+                          <DatePicker
+                              display
+                              formik={formik}
+                              fieldName="departureDate"
+                              value={formik.values.departureDate}
+                              label="Departure Date"
+                              disabled={flightSearchStatus.isLoading}
+                          />
+                        </Grid>
 
-                  <Grid item xs={12} className={homePageSyles.datePicker}>
-                    <DatePicker
-                      display={formik.values.tripType === constants.tripType[0]}
-                      formik={formik}
-                      fieldName="returnDate"
-                      value={formik.values.returnDate}
-                      label="Return Date"
-                      disabled={flightSearchStatus.isLoading}
+                        <Grid item xs={12} className={homePageStyles.datePicker}>
+                          <DatePicker
+                              display={formik.values.tripType === constants.tripType[0]}
+                              formik={formik}
+                              fieldName="returnDate"
+                              value={formik.values.returnDate}
+                              label="Return Date"
+                              disabled={flightSearchStatus.isLoading}
+                          />
+                        </Grid>
+                      </Grid>
+                }
+
+                <Grid container justifyContent="flex-end" item xs={12} className={homePageStyles.buttonContainer}>
+                  <Grid lg={4} xs={12} item paddingBottom="14px">
+                    <SubmitButton
+                      loading={flightSearchStatus.isLoading}
+                      disabled={!formik.isValid}
                     />
                   </Grid>
                 </Grid>
-                  <Grid container justifyContent="flex-end" item xs={12} className={homePageSyles.buttonContainer}>
-                    <Grid lg={4} xs={12} item>
-                      <SubmitButton
-                        loading={flightSearchStatus.isLoading}
-                        disabled={!formik.isValid}
-                      />
-                    </Grid>
-                  </Grid>
               </Grid>
             </form>
             {
               !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
-                <Alert severity="error">
-                  {flightSearchStatus.result!.error!.message}
-                </Alert>
+                <Grid container justifyContent="center" paddingTop="14px">
+                  <Alert severity="error">
+                    {flightSearchStatus.result!.error!.message}
+                  </Alert>
+                </Grid>
             }
           </Grid>
 
