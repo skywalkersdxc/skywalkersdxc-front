@@ -3,15 +3,15 @@ import {FlightResultsProps} from "../../pages/HomePage/interfaces";
 import {Box, Grid, LinearProgress, Typography} from "@mui/material";
 import {airlineFailoverLogo} from "../FlightCard/FlightInfoComponent";
 import flightCardStyles from "../FlightCard/FlightCard.module.css";
-import {capitalizeString, convertDate, timeTravelDiff} from "../../utils/utils";
+import {convertDate, timeTravelDiff} from "../../utils/utils";
 import moment from "moment";
-import {getAirlineByCodes} from "../../services/FlightDetails.service";
+import {getAirlineByCodes, IAirlineInfo} from "../../services/FlightDetails.service";
 
-type FlightItinerarieInfoProps = {
+type FlightItineraryInfoProps = {
     flightOffer: FlightResultsProps,
 };
 
-const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer}: FlightItinerarieInfoProps) => {
+const FlightItineraryInfo: React.FC<FlightItineraryInfoProps> = ({flightOffer}: FlightItineraryInfoProps) => {
     const [airlines, setAirlines] = useState<Map<string, string> | null>(null);
     const {passengers} = flightOffer;
     const ItineraryTitle = ["OUTBOUND", "RETURN"];
@@ -23,10 +23,8 @@ const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer}:
     useEffect(()=> {
         getAirlineByCodes(involvedCarrierCodesDistinct)
             .then(({data}) =>
-                setAirlines(new Map(
-                    data.map((airline) => [airline.iataCode, airline.businessName])
-                ))
-            )
+                setAirlines(buildMapOfCodes(data))
+            ).catch((reason) => console.log(reason))
     }, []);
 
     const Elements = flightOffer.itineraries.map((itinerary, index) => {
@@ -90,10 +88,14 @@ const FlightItineraryInfo: React.FC<FlightItinerarieInfoProps> = ({flightOffer}:
     });
 
     return (
-        <Grid container>
+        <Grid container data-testid={"flightItInfoComp"}>
             {Elements}
         </Grid>
     );
+}
+
+export const buildMapOfCodes = (data: IAirlineInfo[]) => {
+    return new Map(data.map((airline) => [airline.iataCode, airline.businessName]))
 }
 
 export default FlightItineraryInfo;
