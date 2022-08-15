@@ -1,15 +1,14 @@
 export const convertDate = (date: string) => {
     const today = new Date(date);
-    console.log(today, 'today');
     if(today.toDateString() === "Invalid Date") {
         return "Invalid Date"
     }
     let hours = today.getHours()
-    let amOrPm = hours > 12 ? " am" : " pm"
+    let amOrPm = hours > 12 ? "am" : "pm"
     hours = (hours % 12) || 12
     let minutes = today.getMinutes() === 0 ? "00" : today.getMinutes()
-    const time = minutes.toString().length === 1 ? `${hours}:0${minutes}${amOrPm}` : `${hours}:${minutes}${amOrPm}` 
-    console.log(time);
+    minutes = minutes.toString().length === 1 ? `0${minutes}` : minutes;
+    const time = `${hours}:${minutes} ${amOrPm}`;
     return time
 }
 
