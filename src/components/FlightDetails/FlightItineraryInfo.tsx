@@ -6,6 +6,7 @@ import flightCardStyles from "../FlightCard/FlightCard.module.css";
 import {convertDate, timeTravelDiff} from "../../utils/utils";
 import moment from "moment";
 import {getAirlineByCodes, IAirlineInfo} from "../../services/FlightDetails.service";
+import {buildMapOfCodes} from "../../utils/utils";
 
 type FlightItineraryInfoProps = {
     flightOffer: FlightResultsProps,
@@ -24,10 +25,10 @@ const FlightItineraryInfo: React.FC<FlightItineraryInfoProps> = ({flightOffer}: 
         getAirlineByCodes(involvedCarrierCodesDistinct)
             .then(({data}) =>
                 setAirlines(buildMapOfCodes(data))
-            ).catch((reason) => console.log(reason))
+            ).catch((reason) => {})
     }, []);
 
-    const Elements = flightOffer.itineraries.map((itinerary, index) => {
+    const itineraries = flightOffer.itineraries.map((itinerary, index) => {
         const segment = itinerary.segments[0];
         return (
             <Grid container flexDirection={"column"} key={index}>
@@ -46,7 +47,7 @@ const FlightItineraryInfo: React.FC<FlightItineraryInfoProps> = ({flightOffer}: 
                     <Grid item xs={10}>
                         <Grid item container xs={12} direction={"column"}>
                             <Grid item xs={1}>
-                                <Typography variant={"body2"} className={flightCardStyles.x}>
+                                <Typography variant={"body2"}>
                                     {airlines?.get(segment.carrierCode)}
                                 </Typography>
                             </Grid>
@@ -89,13 +90,9 @@ const FlightItineraryInfo: React.FC<FlightItineraryInfoProps> = ({flightOffer}: 
 
     return (
         <Grid container data-testid={"flightItInfoComp"}>
-            {Elements}
+            {itineraries}
         </Grid>
     );
-}
-
-export const buildMapOfCodes = (data: IAirlineInfo[]) => {
-    return new Map(data.map((airline) => [airline.iataCode, airline.businessName]))
 }
 
 export default FlightItineraryInfo;

@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import FlightDetailsModal from "./FlightDetailsModal";
 import React from "react";
-import FlightItineraryInfo, {buildMapOfCodes} from "./FlightItineraryInfo";
+import FlightItineraryInfo from "./FlightItineraryInfo";
+import {buildMapOfCodes} from "../../utils/utils";
 import axios, {AxiosResponse} from "axios";
 
 const dummyData: any = {

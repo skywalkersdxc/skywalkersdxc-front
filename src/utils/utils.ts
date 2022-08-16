@@ -1,3 +1,5 @@
+import {IAirlineInfo} from "../services/FlightDetails.service";
+
 export const convertDate = (date: string) => {
     const today = new Date(date);
     if(today.toDateString() === "Invalid Date") {
@@ -27,4 +29,8 @@ export const timeTravelDiff = (departure: string, arrival: string) => {
 
 export const capitalizeString = (text: string): string => {
     return text.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+}
+
+export const buildMapOfCodes = (data: IAirlineInfo[]) => {
+    return new Map(data.map((airline) => [airline.iataCode, airline.businessName]))
 }
