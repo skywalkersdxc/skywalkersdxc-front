@@ -22,7 +22,7 @@ const FlightCard: React.FC<FlightCardProps> = ({flightResults, showMode} : Fligh
     const handleOpen = () => setOpen(true);
     let randomString = (Math.random() + 1).toString(36).substring(7);
    return (
-       <Grid data-testid="flightCard" key={randomString + flightResults.id} container item className={flightCardStyles.containerCard} xs={12}>
+       <Grid data-testid="flightCard" key={`${randomString}${flightResults.id}`} container item className={flightCardStyles.containerCard} xs={12}>
         {flightResults.itineraries.map((item) => <FlightInfoComponent key={item.duration} itineraries={item.segments[0]}/>)}
         {
             !showMode ?
