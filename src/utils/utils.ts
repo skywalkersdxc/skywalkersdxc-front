@@ -4,10 +4,11 @@ export const convertDate = (date: string) => {
         return "Invalid Date"
     }
     let hours = today.getHours()
-    let amOrPm = hours > 12 ? " am" : " pm"
+    let amOrPm = hours > 12 ? "am" : "pm"
     hours = (hours % 12) || 12
     let minutes = today.getMinutes() === 0 ? "00" : today.getMinutes()
-    const time = hours + ":" + minutes + amOrPm;
+    minutes = minutes.toString().length === 1 ? `0${minutes}` : minutes;
+    const time = `${hours}:${minutes} ${amOrPm}`;
     return time
 }
 
