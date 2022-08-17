@@ -94,7 +94,7 @@ function HomePage() {
       <Container className={homePageSyles.container}>
         <Grid container className={homePageSyles.allHomePageGrid}>
 
-          <Grid container item> 
+          <Grid container item>
             <Grid container item xs={12} alignContent="flex-end" className={homePageSyles.iconContainer}>
               <HomeButton onClick={onClickHomeButton} disabled={flightSearchStatus.isLoading} />
             </Grid>
@@ -110,7 +110,7 @@ function HomePage() {
           <Grid container item xs={12} md={7}>
             <form className={homePageSyles.flightForm} onSubmit={formik.handleSubmit}>
               <Grid container item xs={12}>
-                
+
                 <Grid container item xs={12} justifyContent="space-between" className={homePageSyles.roundPassContainer}>
                   <Grid item xs={6} md={4}>
                     <RoundedSelect
@@ -198,15 +198,16 @@ function HomePage() {
               </Grid>
             </form>
             {
-              !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
+              !flightSearchStatus.isLoading && flightSearchStatus.result?.error &&
                 <Alert severity="error">
                   {flightSearchStatus.result!.error!.message}
                 </Alert>
             }
           </Grid>
 
-          <Grid item xs={12} md={7} container justifyContent="space-between">
-            {flightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item}/>)}
+          <Grid item xs={12} md={7} container justifyContent="space-between" className={homePageSyles.containerFlightCardsHomePage}>
+            {flightOffers?.data?.map((item: FlightResultsProps) =>
+                <FlightCard key={item.id} flightResults={{...item, passengers: formik.values.passengers}}/>)}
           </Grid>
 
         </Grid>

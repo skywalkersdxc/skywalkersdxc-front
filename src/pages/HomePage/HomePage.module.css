@@ -5,9 +5,17 @@
     min-width: 100%;
 }
 
+.containerX {
+    margin-top: 28px;
+}
+
 .roundSelect {
     border-radius: 30px;
     display: flex;
+}
+
+.containerFlightCardsHomePage {
+    margin-top: 10px;
 }
 
 .inputDateField {
@@ -88,8 +96,10 @@ svg[data-testid="GroupIcon"] {
     padding-right: 12px;
 }
 
-.datePicker {
+.flightPicker, .datePicker {
     margin: 12px;
+    padding-left: 0px !important;
+    margin-right: 16px;
 }
 
 .divider {
