@@ -108,3 +108,8 @@ svg[data-testid="GroupIcon"] {
 .airportPickerIcon {
     padding-bottom: 16px;
 }
+
+.formErrors {
+    width: 100%;
+    padding-top: 16px;
+}
