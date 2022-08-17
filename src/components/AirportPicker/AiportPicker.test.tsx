@@ -9,6 +9,7 @@ describe("AiportPicker component", () => {
   test("Renders correctly", async () => {
     render(
       <AirportPicker
+        dispatcher={()=>{}}
         flightType="departure"
         value=""
         formik={{
@@ -33,6 +34,7 @@ describe("Airport Component: Formik integration", () => {
 
     render(
       <AirportPicker
+        dispatcher={()=>{}}
         flightType="departure"
         formik={formik}
         value=""
@@ -59,6 +61,7 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
+            dispatcher={()=>{}}
             value=""
             flightType="departure"
             formik={formik}
@@ -85,6 +88,7 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
+            dispatcher={()=>{}}
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
@@ -104,6 +108,7 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
+            dispatcher={()=>{}}
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"

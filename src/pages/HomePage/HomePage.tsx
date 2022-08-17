@@ -12,13 +12,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { StyledEngineProvider } from "@mui/material/styles";
 import constants from "../../utils/constants";
-import moment from "moment";
-import { useState } from "react";
+import moment, {Moment} from "moment";
+import { useReducer, useState} from "react";
 import { searchFlight, transformFormData } from "../../logic/searchFlight";
 import { useFlightOffers } from "../../utils/flightsSearchContext";
 import { IFlightSearchStatus, IHomePageFormData, FlightResultsProps } from "./interfaces";
-import { IFlightOffers } from "../../intefaces/flights";
+import {Airport, IFlightOffers} from "../../intefaces/flights";
 import {CompactSearchForm} from "../../components/CompactSearchForm/CompactSearchForm";
+import { formReducer, FormState} from "../../utils/FormReducer";
 
 function HomePage() {
   const today = moment()
@@ -44,7 +45,7 @@ function HomePage() {
           today.toISOString(),
           "Departure date cannot be before current date"
         )
-        .max(futureLimit, "Dates cannnot be that far in advance."),
+        .max(futureLimit, "Dates cannot be that far in advance."),
       returnDate: Yup.date().when("tripType", {
         is: constants.tripType[0],
         then: Yup.date()
@@ -52,7 +53,7 @@ function HomePage() {
             Yup.ref("departureDate"),
             "Return date cannot be before departure date"
           )
-          .max(futureLimit, "Dates cannnot be that far in advance."),
+          .max(futureLimit, "Dates cannot be that far in advance."),
       }),
     }),
     initialValues: {
@@ -88,6 +89,31 @@ function HomePage() {
 
   const onClickHomeButton = () => {
     formik?.resetForm();
+  }
+
+  const formState: FormState = {
+    departureAirport: {name: "LAX", longName: "LOS ANGELES INTL", location: ""},
+    arrivalAirport: {name: "", longName: "", location: ""},
+    departureDate: today,
+    arrivalDate: today.add(3, "days")
+  }
+
+  const [state, dispatch] = useReducer(formReducer, formState)
+
+  const departureAirportChange = (airport: Airport) => {
+    dispatch({type: "departureAirportChange", payload: airport})
+  }
+
+  const arrivalAirportChange = (airport: Airport) => {
+    dispatch({type: "arrivalAirportChange", payload: airport})
+  }
+
+  const departureDateChange = (newDate: Moment) => {
+    dispatch({type: "departureDateChange", payload: newDate})
+  }
+
+  const arrivalDateChange = (newDate: Moment) => {
+    dispatch({type: "arrivalDateChange", payload: newDate})
   }
 
   return (
@@ -130,69 +156,77 @@ function HomePage() {
                     />
                   </Grid>
                 </Grid>
+                  {
+                    flightOffers?.data
+                        ? <CompactSearchForm
+                            formState={state}
+                            arrivalDispatcher={arrivalAirportChange}
+                            departureDispatcher={departureAirportChange}
+                            dateArrivalDispatcher={arrivalDateChange}
+                            dateDepartureDispatcher={departureDateChange}
+                            formik={formik}
+                        />
+                        : <Grid
+                            container
+                            item
+                            xs={12}
+                            justifyContent="center"
+                            className={homePageStyles.inputsFlightsContainer}
+                        >
+                          <Grid item xs={12} className={homePageStyles.flightPicker}>
+                            <AirportPicker
+                                dispatcher={departureAirportChange}
+                                flightType="departure"
+                                formik={formik}
+                                fieldName="departureFlight"
+                                disabled={flightSearchStatus.isLoading}
+                                value={formik.values.departureFlight}
+                                defaultAirport={{
+                                  name: "LAX",
+                                  longName: "LOS ANGELES INTL"
+                                }}
+                            />
+                          </Grid>
+                          <Grid item xs={12} className={homePageStyles.flightPicker}>
+                            <AirportPicker
+                                dispatcher={arrivalAirportChange}
+                                flightType="destination"
+                                formik={formik}
+                                fieldName="destinationFlight"
+                                disabled={flightSearchStatus.isLoading}
+                                value={formik.values.destinationFlight}
+                            />
+                          </Grid>
 
-                {
-                  flightOffers?.data
-                      ? <CompactSearchForm
-                          formik={formik}
-                      />
-                      : <Grid
-                          container
-                          item
-                          xs={12}
-                          justifyContent="center"
-                          className={homePageStyles.inputsFlightsContainer}
-                      >
-                        <Grid item xs={12} className={homePageStyles.flightPicker}>
-                          <AirportPicker
-                              flightType="departure"
-                              formik={formik}
-                              fieldName="departureFlight"
-                              disabled={flightSearchStatus.isLoading}
-                              value={formik.values.departureFlight}
-                              defaultAirport={{
-                                name: "LAX",
-                                longName: "LOS ANGELES INTL"
-                              }}
-                          />
-                        </Grid>
-                        <Grid item xs={12} className={homePageStyles.flightPicker}>
-                          <AirportPicker
-                              flightType="destination"
-                              formik={formik}
-                              fieldName="destinationFlight"
-                              disabled={flightSearchStatus.isLoading}
-                              value={formik.values.destinationFlight}
-                          />
-                        </Grid>
+                          <Grid item xs={12} className={homePageStyles.dividerContainer}>
+                            <hr className={homePageStyles.divider}/>
+                          </Grid>
 
-                        <Grid item xs={12} className={homePageStyles.dividerContainer}>
-                          <hr className={homePageStyles.divider}/>
-                        </Grid>
+                          <Grid item xs={12} className={homePageStyles.datePicker}>
+                            <DatePicker
+                                display
+                                dispatcher={departureDateChange}
+                                formik={formik}
+                                fieldName="departureDate"
+                                value={formik.values.departureDate}
+                                label="Departure Date"
+                                disabled={flightSearchStatus.isLoading}
+                            />
+                          </Grid>
 
-                        <Grid item xs={12} className={homePageStyles.datePicker}>
-                          <DatePicker
-                              display
-                              formik={formik}
-                              fieldName="departureDate"
-                              value={formik.values.departureDate}
-                              label="Departure Date"
-                              disabled={flightSearchStatus.isLoading}
-                          />
+                          <Grid item xs={12} className={homePageStyles.datePicker}>
+                            <DatePicker
+                                display={formik.values.tripType === constants.tripType[0]}
+                                dispatcher={arrivalDateChange}
+                                formik={formik}
+                                fieldName="returnDate"
+                                value={formik.values.returnDate}
+                                label="Return Date"
+                                disabled={flightSearchStatus.isLoading}
+                            />
+                          </Grid>
                         </Grid>
-
-                        <Grid item xs={12} className={homePageStyles.datePicker}>
-                          <DatePicker
-                              display={formik.values.tripType === constants.tripType[0]}
-                              formik={formik}
-                              fieldName="returnDate"
-                              value={formik.values.returnDate}
-                              label="Return Date"
-                              disabled={flightSearchStatus.isLoading}
-                          />
-                        </Grid>
-                      </Grid>
-                }
+                  }
 
                 <Grid container justifyContent="flex-end" item xs={12} className={homePageStyles.buttonContainer}>
                   <Grid lg={4} xs={12} item paddingBottom="14px">

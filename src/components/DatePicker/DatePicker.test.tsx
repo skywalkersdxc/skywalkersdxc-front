@@ -8,6 +8,7 @@ describe("DatesPicker: Basic rendering", () => {
     test("Renders correctly when display prop is true", async () => {
         render(
             <DatesPicker
+                dispatcher={()=>{}}
                 display
                 fieldName="TestPicker"
                 value={moment().toISOString()}
@@ -24,6 +25,7 @@ describe("DatesPicker: Basic rendering", () => {
     test("Does not render when display prop is false", async () => {
         render(
             <DatesPicker
+                dispatcher={()=>{}}
                 display={false}
                 fieldName="TestPicker"
                 value={moment().toISOString()}
@@ -50,6 +52,7 @@ describe("DatesPicker: Formik integration", () => {
 
         const { container }  = render(
             <DatesPicker
+                dispatcher={()=>{}}
                 display
                 fieldName="TestPicker"
                 value={moment().toISOString()}
@@ -65,6 +68,7 @@ describe("DatesPicker: Formik integration", () => {
     test("Displays error message correctly", () => {
         render(
             <DatesPicker
+                dispatcher={()=>{}}
                 display
                 fieldName="TestPicker"
                 value={moment().toISOString()}

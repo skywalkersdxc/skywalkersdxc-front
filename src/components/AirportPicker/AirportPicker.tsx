@@ -5,6 +5,7 @@ import { debounce } from "lodash";
 import { getData } from "./getData"
 import axios from "axios";
 import styles from "../../pages/HomePage/HomePage.module.css"
+import {Airport} from "../../intefaces/flights";
 
 interface AirportPickerProps {
   flightType: string;
@@ -12,6 +13,7 @@ interface AirportPickerProps {
   fieldName: string;
   value: string;
   disabled?: boolean;
+  dispatcher: Function;
   defaultAirport?: {
     name: string,
     longName: string
@@ -22,16 +24,11 @@ interface IconComponentProps {
   type: string;
 }
 
-interface Airport {
-  name: string;
-  longName: string;
-  location: string;
-}
-
 const AirportPicker: React.FC<AirportPickerProps> = ({
   formik,
   flightType,
   fieldName,
+  dispatcher,
   value,
   disabled,
   defaultAirport
@@ -41,6 +38,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
       setLabel(flight.longName);
       setSearch(flight.name);
       formik.setFieldValue(fieldName, flight.name);
+      dispatcher(flight);
       return;
     }
     setSearch("")
