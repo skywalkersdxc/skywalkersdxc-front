@@ -1,7 +1,6 @@
-import {Alert, Autocomplete, CircularProgress, FormControl, TextField, Grid} from "@mui/material";
+import {Alert, Autocomplete, FormControl, TextField, Grid } from "@mui/material";
 import { Place, AirplanemodeActive } from "@mui/icons-material";
-import React, {useCallback, useEffect, useState} from "react";
-import { debounce } from "lodash";
+import React, { useEffect, useState} from "react";
 import { getData } from "./getData"
 import axios from "axios";
 import styles from "../../pages/HomePage/HomePage.module.css"
@@ -10,40 +9,35 @@ interface AirportPickerProps {
   flightType: string;
   formik: any;
   fieldName: string;
-  value: string;
-  disabled?: boolean;
-  defaultAirport?: {
-    name: string,
-    longName: string
-  };
+  handleDataName: Function
 }
 
 interface IconComponentProps {
   type: string;
 }
 
-interface Airport {
-  name: string;
-  longName: string;
-  location: string;
-}
-
 const AirportPicker: React.FC<AirportPickerProps> = ({
   formik,
   flightType,
   fieldName,
-  value,
-  disabled,
-  defaultAirport
+  handleDataName
 }: AirportPickerProps) => {
-  const handleFlightChange = (event: any, flight: Airport) => {
-    if (flight){
-      setLabel(flight.longName);
-      setSearch(flight.name);
-      formik.setFieldValue(fieldName, flight.name);
-      return;
+  const handleFlightChange = (flightInfo: string) => {
+    const { out } = getData({keyword: flightInfo});
+    const lowerCase = flightInfo.toLowerCase()
+
+    if(lowerCase === "lax" ){
+      formik.setFieldValue(fieldName, "LOS ANGELES, CA, LOS ANGELES INTL")
+      handleDataName({name: "LAX", type: fieldName})
+    } else {
+      formik.setFieldValue(fieldName, flightInfo)
     }
-    setSearch("")
+
+    out.then(res => {
+      setAirportsOptions(res.data);
+    }).catch(err => {
+      axios.isCancel(err);
+    });
   };
 
   const IconComponent: React.FC<IconComponentProps> = ({ type }) => {
@@ -65,44 +59,19 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     }
   };
 
-  const [keyword, setKeyword] = useState('')
-  const [search, setSearch] = useState(defaultAirport?.name || '')
-  const [loading, setLoading] = useState(false)
-  const [airportsOptions, setAirportsOptions] = useState([]);
-  const [label, setLabel] = useState(defaultAirport?.longName || '');
-
-  const debounceLoadData = useCallback(debounce(setKeyword, 1000), []);
+  const [airportsOptions, setAirportsOptions] = useState([{name: "Loading ...", label: "Loading ..."}]);
+  const [isDisabled, setIsDisabled] = useState(false)
 
   useEffect(() => {
-    debounceLoadData(search);
-  }, [search]);
+    handleFlightChange(formik.initialValues[fieldName])
+  }, []);
 
-
-  //useEffect used to reset input value after clicking home button 
-  useEffect(() => {
-    if(!value || value === defaultAirport?.name) {
-      setSearch(value);
-    } 
-  }, [value]);
-
-  useEffect(() => {
-    setLoading(true)
-    const { out, source } = getData({ keyword });
-
-    out.then(res => {
-      setAirportsOptions(res.data);
-      setLoading(false)
-    }).catch(err => {
-      setAirportsOptions([]);
-      axios.isCancel(err);
-      setLoading(false)
-    });
-
-    return () => {
-      source.cancel()
-    };
-  }, [keyword]);
-
+  const handleAutocomplete = (info: HTMLElement) => {
+    const nameCode = airportsOptions.filter((item) => item.label === info.innerText)
+    formik.setFieldValue(fieldName, nameCode[0].label)
+    handleDataName({name: nameCode[0].name, type: fieldName})
+    setIsDisabled(true)
+  }
 
   return (
     <div>
@@ -115,52 +84,33 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
             <IconComponent type={flightType}/>
           </Grid>
           <Grid item xs={10}>
-            <Autocomplete
-              id="autocompleteSearch"
-              data-testid="autocompleteSearch"
-              disabled={disabled}
-              options={airportsOptions}
-              getOptionLabel={(option: Airport) => `${option.longName}, ${option.location} [${option.name}]` }
-              loading={loading}
-              isOptionEqualToValue={(option, value) =>
-                option.name === value.name
-              }
-              className={styles.input}
-              onChange={handleFlightChange}
-              disableClearable
-              renderInput={(params) => (
-                <TextField {...params}
-                  data-testid="autocompleteText"
-                  label={selectLabel(flightType)}
-                  onChange={e => {
-                    e.preventDefault()
-                    setSearch(e.target.value);
-                    setLabel(e.target.value);
-                  }}
-                  inputProps={{
-                    ...params.inputProps,
-                      value: label
-                  }}
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                        <React.Fragment>
-                          {loading ? (
-                              <CircularProgress color="inherit" size={20} />
-                          ) : null}
-                          {params.InputProps.endAdornment}
-                        </React.Fragment>
-                    )
-                  }}
+          <Autocomplete
+            disablePortal
+            id="autocompleteSearch"
+            data-testid="autocompleteSearch"
+            disabled={isDisabled}
+            options={airportsOptions}
+            onChange={(e: any) => handleAutocomplete(e.targe)}
+            value={formik.getFieldProps(fieldName).value}
+            renderInput={(params) => {
+              return (
+                <TextField 
+                {...params} 
+                label={selectLabel(flightType)}
+                onChange={(e: any) => handleFlightChange(e.target.value)}
+                onBlur={formik.getFieldProps(fieldName).onBlur}
+                value={formik.getFieldProps(fieldName).value}
+                name={formik.getFieldProps(fieldName).name}
                 />
-              )}
-            />
+              )
+            }}
+          />
           </Grid>
         </Grid>
       </FormControl>
-      {formik.errors[fieldName] && (
+      {formik.errors[fieldName] && formik.touched[fieldName] ? (
         <Alert severity="error">{formik.errors[fieldName]}</Alert>
-      )}
+      ): null}
     </div>
   );
 };

@@ -10,11 +10,11 @@ describe("AiportPicker component", () => {
     render(
       <AirportPicker
         flightType="departure"
-        value=""
         formik={{
           errors: {},
         }}
         fieldName="airport-picker-test"
+        handleDataName={() => {}}
       />
     );
     expect(screen.getByTestId("airport-picker-test")).toBeInTheDocument();
@@ -35,8 +35,8 @@ describe("Airport Component: Formik integration", () => {
       <AirportPicker
         flightType="departure"
         formik={formik}
-        value=""
         fieldName="airport-picker-test"
+        handleDataName={() => {}}
       />
     );
     const autoCompleteSearch = screen.getByLabelText("From");
@@ -59,10 +59,10 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
-            value=""
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
+            handleDataName={() => {}}
         />
     );
     const autoCompleteSearch = screen.getByLabelText("From");
@@ -88,7 +88,7 @@ describe("Airport Component: Formik integration", () => {
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
-            value=""
+            handleDataName={() => {}}
         />
     );
 
@@ -107,7 +107,7 @@ describe("Airport Component: Formik integration", () => {
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
-            value=""
+            handleDataName={() => {}}
         />
     );
 
