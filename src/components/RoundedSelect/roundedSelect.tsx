@@ -35,9 +35,7 @@ const RoundedSelect: React.FC<RoundSelectProps> = ({
       <Select
         data-testid={optionName}
         name={optionName}
-        value={formik.values[optionName]}
-        onChange={formik.handleChange}
-        onBlur={formik.onBlur}
+        {...formik.getFieldProps(optionName)}
         className={homePageStyles.roundSelect}
         disabled={disabled}
       >
