@@ -90,7 +90,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
             data-testid="autocompleteSearch"
             disabled={isDisabled}
             options={airportsOptions}
-            onChange={(e: any) => handleAutocomplete(e.targe)}
+            onChange={(e: any) => handleAutocomplete(e.target)}
             value={formik.getFieldProps(fieldName).value}
             renderInput={(params) => {
               return (
