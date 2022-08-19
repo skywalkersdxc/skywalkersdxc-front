@@ -31,13 +31,26 @@ function HomePage() {
 
   const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
   const { flightOffers, setFlightOffers } = useFlightOffers();
+  const [codeValues, setCodeValues] = useState({
+    destinationFlight: "",
+    departureFlight: ""
+  })
 
+  const initialValues = {
+    tripType: constants.tripType[0],
+    passengers: 1,
+    departureDate: today.toISOString(),
+    returnDate: today.add(3, "days").toISOString(),
+    departureFlight: "LAX",
+    destinationFlight: "",
+  }
   const formik = useFormik<IHomePageFormData>({
     validateOnChange: true,
     validationSchema: Yup.object().shape({
       tripType: Yup.string().required("Trip type is required!"),
       passengers: Yup.number().required("Number of passengers is required!"),
-      departureFlight: Yup.string().required("Departure flight is required!"),
+      departureFlight: Yup.string()
+      .required("Departure flight is required!"),
       destinationFlight: Yup.string().required("Destination flight is required!"),
       departureDate: Yup.date()
         .required("Departure date is always required")
@@ -56,16 +69,11 @@ function HomePage() {
           .max(futureLimit, "Dates cannot be that far in advance."),
       }),
     }),
-    initialValues: {
-      tripType: constants.tripType[0],
-      passengers: 1,
-      departureDate: today.toISOString(),
-      returnDate: today.add(3, "days").toISOString(),
-      departureFlight: "LAX",
-      destinationFlight: "",
-    },
+    initialValues,
     onSubmit: async (values) => {
       setFlightSearchStatus({isLoading: true});
+      values.departureFlight = codeValues.departureFlight
+      values.destinationFlight = codeValues.destinationFlight
       const query = transformFormData(values);
       try{
         const result = await searchFlight(query);
@@ -79,6 +87,9 @@ function HomePage() {
             error: { message: error as string }
           }
         });
+        setTimeout(() => {
+          onClickHomeButton()
+        }, 2500)
       }
     },
     onReset: () => {
@@ -88,7 +99,22 @@ function HomePage() {
   });
 
   const onClickHomeButton = () => {
-    formik?.resetForm();
+    formik.resetForm({values: initialValues})
+    window.location.reload();
+  }
+
+  const handleDataName = (flightCodeValue: any) => {
+    if(flightCodeValue.type === "departureFlight"){
+      setCodeValues({
+        ...codeValues,
+        departureFlight: flightCodeValue.name
+      })
+    } else {
+      setCodeValues({
+        ...codeValues,
+        destinationFlight: flightCodeValue.name
+      })
+    }
   }
 
   const formState: FormState = {
@@ -175,26 +201,18 @@ function HomePage() {
                         >
                           <Grid item xs={12} className={homePageStyles.flightPicker}>
                             <AirportPicker
-                                dispatcher={departureAirportChange}
                                 flightType="departure"
                                 formik={formik}
                                 fieldName="departureFlight"
-                                disabled={flightSearchStatus.isLoading}
-                                value={formik.values.departureFlight}
-                                defaultAirport={{
-                                  name: "LAX",
-                                  longName: "LOS ANGELES INTL"
-                                }}
+                                handleDataName={handleDataName}
                             />
                           </Grid>
                           <Grid item xs={12} className={homePageStyles.flightPicker}>
                             <AirportPicker
-                                dispatcher={arrivalAirportChange}
                                 flightType="destination"
                                 formik={formik}
                                 fieldName="destinationFlight"
-                                disabled={flightSearchStatus.isLoading}
-                                value={formik.values.destinationFlight}
+                                handleDataName={handleDataName}
                             />
                           </Grid>
 
@@ -238,6 +256,8 @@ function HomePage() {
                 </Grid>
               </Grid>
             </form>
+          </Grid>
+          <Grid item container justifyContent="center" xs={12} className={homePageStyles.formErrors}>
             {
               !flightSearchStatus.isLoading && flightSearchStatus.result?.error && 
                 <Grid container justifyContent="center" paddingTop="14px">

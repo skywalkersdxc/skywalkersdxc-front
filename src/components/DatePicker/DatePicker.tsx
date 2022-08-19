@@ -49,17 +49,16 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                             renderInput={
                                 (params) =>
                                     <TextField
+                                        {...formik.getFieldProps(props.fieldName)}
                                         {...params}
                                         inputProps={{
                                             ...params.inputProps,
                                             readOnly: true,
                                         }}
-                                        name={props.fieldName}
                                         InputProps={{
                                             ...params.InputProps,
                                             className: homePageStyles.inputDateField
                                         }}
-                                        label={props.label}
                                     />
                             }
                             value={props.value}
@@ -68,11 +67,11 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
                             minDate={today}
                             className={homePageStyles.datePickerInput}
                         />
-                        {formik.errors[props.fieldName] &&
+                        {formik.errors[props.fieldName] && formik.touched[props.fieldName] ? (
                             <Alert severity="error">
                                 {formik.errors[props.fieldName]}
                             </Alert>
-                        }
+                        ) : null}
                     </Grid>
                 </Grid>
             </LocalizationProvider>

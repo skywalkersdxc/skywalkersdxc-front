@@ -9,13 +9,12 @@ describe("AiportPicker component", () => {
   test("Renders correctly", async () => {
     render(
       <AirportPicker
-        dispatcher={()=>{}}
         flightType="departure"
-        value=""
         formik={{
           errors: {},
         }}
         fieldName="airport-picker-test"
+        handleDataName={() => {}}
       />
     );
     expect(screen.getByTestId("airport-picker-test")).toBeInTheDocument();
@@ -34,11 +33,10 @@ describe("Airport Component: Formik integration", () => {
 
     render(
       <AirportPicker
-        dispatcher={()=>{}}
         flightType="departure"
         formik={formik}
-        value=""
         fieldName="airport-picker-test"
+        handleDataName={() => {}}
       />
     );
     const autoCompleteSearch = screen.getByLabelText("From");
@@ -61,11 +59,10 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
-            dispatcher={()=>{}}
-            value=""
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
+            handleDataName={() => {}}
         />
     );
     const autoCompleteSearch = screen.getByLabelText("From");
@@ -88,11 +85,10 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
-            dispatcher={()=>{}}
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
-            value=""
+            handleDataName={() => {}}
         />
     );
 
@@ -108,11 +104,10 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
-            dispatcher={()=>{}}
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
-            value=""
+            handleDataName={() => {}}
         />
     );
 
