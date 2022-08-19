@@ -14,9 +14,10 @@ interface Props {
     dateDepartureDispatcher: Function;
     dateArrivalDispatcher: Function;
     formState: FormState
+    handleDataName: Function;
 }
 
-export const CompactSearchForm = ({ formik, departureDispatcher, arrivalDispatcher, formState, dateDepartureDispatcher, dateArrivalDispatcher }: Props) => {
+export const CompactSearchForm = ({ formik, departureDispatcher, arrivalDispatcher, formState, dateDepartureDispatcher, dateArrivalDispatcher, handleDataName }: Props) => {
     const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
 
     return (
@@ -24,31 +25,21 @@ export const CompactSearchForm = ({ formik, departureDispatcher, arrivalDispatch
             <Grid container item className={compactSearchFormStyle.inputsFlightsContainer}>
                 <Grid item xs={6} className={compactSearchFormStyle.flightPicker}>
                     <AirportPicker
-                        dispatcher={departureDispatcher}
+                        handleDataName={handleDataName}
                         flightType="departure"
                         formik={formik}
                         fieldName="departureFlight"
-                        disabled={flightSearchStatus.isLoading}
-                        value={formik.values.departureFlight}
-                        defaultAirport={{
-                            name: formState.departureAirport.name,
-                            longName: formState.departureAirport.longName
-                        }}
+                        compact
                     />
 
                 </Grid>
                 <Grid item xs={6} className={compactSearchFormStyle.flightPicker}>
                     <AirportPicker
-                        dispatcher={arrivalDispatcher}
+                        handleDataName={handleDataName}
                         flightType="destination"
                         formik={formik}
                         fieldName="destinationFlight"
-                        disabled={flightSearchStatus.isLoading}
-                        value={formik.values.destinationFlight}
-                        defaultAirport={{
-                            name: formState.arrivalAirport.name,
-                            longName: formState.arrivalAirport.longName
-                        }}
+                        compact
                     />
                 </Grid>
                 <Grid item xs={12}>

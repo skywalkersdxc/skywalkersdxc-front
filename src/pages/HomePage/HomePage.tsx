@@ -185,6 +185,7 @@ function HomePage() {
                   {
                     flightOffers?.data
                         ? <CompactSearchForm
+                            handleDataName={handleDataName}
                             formState={state}
                             arrivalDispatcher={arrivalAirportChange}
                             departureDispatcher={departureAirportChange}
