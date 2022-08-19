@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/skywalkersdxc-front/static/css/main.8d93296f.css",
-    "main.js": "/skywalkersdxc-front/static/js/main.6fd92ae4.js",
+    "main.css": "/skywalkersdxc-front/static/css/main.a82e70ef.css",
+    "main.js": "/skywalkersdxc-front/static/js/main.41a9b80f.js",
     "static/js/787.9e71a55d.chunk.js": "/skywalkersdxc-front/static/js/787.9e71a55d.chunk.js",
     "index.html": "/skywalkersdxc-front/index.html",
-    "main.8d93296f.css.map": "/skywalkersdxc-front/static/css/main.8d93296f.css.map",
-    "main.6fd92ae4.js.map": "/skywalkersdxc-front/static/js/main.6fd92ae4.js.map",
+    "main.a82e70ef.css.map": "/skywalkersdxc-front/static/css/main.a82e70ef.css.map",
+    "main.41a9b80f.js.map": "/skywalkersdxc-front/static/js/main.41a9b80f.js.map",
     "787.9e71a55d.chunk.js.map": "/skywalkersdxc-front/static/js/787.9e71a55d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8d93296f.css",
-    "static/js/main.6fd92ae4.js"
+    "static/css/main.a82e70ef.css",
+    "static/js/main.41a9b80f.js"
   ]
 }
