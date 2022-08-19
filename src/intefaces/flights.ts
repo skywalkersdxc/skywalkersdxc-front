@@ -129,3 +129,9 @@ export interface IFlightSearchStatus {
         },
     }
 }
+
+export interface Airport {
+    name: string;
+    longName: string;
+    location: string;
+}

@@ -4,12 +4,14 @@ import React, { useEffect, useState} from "react";
 import { getData } from "./getData"
 import axios from "axios";
 import styles from "../../pages/HomePage/HomePage.module.css"
+import {Airport} from "../../intefaces/flights";
 
 interface AirportPickerProps {
   flightType: string;
   formik: any;
   fieldName: string;
   handleDataName: Function
+  compact?: boolean;
 }
 
 interface IconComponentProps {
@@ -20,7 +22,8 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   formik,
   flightType,
   fieldName,
-  handleDataName
+  handleDataName,
+  compact
 }: AirportPickerProps) => {
   const handleFlightChange = (flightInfo: string) => {
     const { out } = getData({keyword: flightInfo});
@@ -31,6 +34,10 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
       handleDataName({name: "LAX", type: fieldName})
     } else {
       formik.setFieldValue(fieldName, flightInfo)
+    }
+
+    if (compact) {
+      formik.setFieldValue(fieldName, formik.getFieldProps(fieldName).value)
     }
 
     out.then(res => {
@@ -94,8 +101,8 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
             value={formik.getFieldProps(fieldName).value}
             renderInput={(params) => {
               return (
-                <TextField 
-                {...params} 
+                <TextField
+                {...params}
                 label={selectLabel(flightType)}
                 onChange={(e: any) => handleFlightChange(e.target.value)}
                 onBlur={formik.getFieldProps(fieldName).onBlur}

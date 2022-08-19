@@ -8,6 +8,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 interface DatesPickerProps {
     display: boolean,
     formik: any,
+    dispatcher: Function;
     fieldName: string,
     value: string,
     label: string,
@@ -27,6 +28,7 @@ const DatesPicker: React.FC<DatesPickerProps> = ({formik, ...props}: DatesPicker
         if(dateValue.isValid()){
             const formattedDate = dateValue.toISOString();
             formik.setFieldValue(props.fieldName, formattedDate);
+            props.dispatcher(dateValue)
         }
     }
     const today = moment();
