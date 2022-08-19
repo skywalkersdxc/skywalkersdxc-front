@@ -5,13 +5,13 @@ import FlightsSearchContextProvider from "../utils/flightsSearchContext";
 
 function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <FlightsSearchContextProvider>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/results" element={<ResultsPage />} />
         </Routes>
-    </FlightsSearchContextProvider>
+      </FlightsSearchContextProvider>
     </BrowserRouter>
   );
 }
