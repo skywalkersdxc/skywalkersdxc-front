@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/skywalkersdxc-front/static/css/main.a82e70ef.css",
-    "main.js": "/skywalkersdxc-front/static/js/main.41a9b80f.js",
+    "main.js": "/skywalkersdxc-front/static/js/main.c1156376.js",
     "static/js/787.9e71a55d.chunk.js": "/skywalkersdxc-front/static/js/787.9e71a55d.chunk.js",
     "index.html": "/skywalkersdxc-front/index.html",
     "main.a82e70ef.css.map": "/skywalkersdxc-front/static/css/main.a82e70ef.css.map",
-    "main.41a9b80f.js.map": "/skywalkersdxc-front/static/js/main.41a9b80f.js.map",
+    "main.c1156376.js.map": "/skywalkersdxc-front/static/js/main.c1156376.js.map",
     "787.9e71a55d.chunk.js.map": "/skywalkersdxc-front/static/js/787.9e71a55d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a82e70ef.css",
-    "static/js/main.41a9b80f.js"
+    "static/js/main.c1156376.js"
   ]
 }
