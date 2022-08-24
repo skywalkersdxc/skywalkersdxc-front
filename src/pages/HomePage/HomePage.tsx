@@ -28,6 +28,7 @@ function HomePage() {
     .set("second", 0)
     .set("millisecond", 0);
   const futureLimit = today.clone().add(1, "year").toISOString();
+  const yesterday = moment().subtract(1, 'days').endOf('day').toISOString();
 
   const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
   const { flightOffers, setFlightOffers } = useFlightOffers();
@@ -55,7 +56,7 @@ function HomePage() {
       departureDate: Yup.date()
         .required("Departure date is always required")
         .min(
-          today.toISOString(),
+          yesterday,
           "Departure date cannot be before current date"
         )
         .max(futureLimit, "Dates cannot be that far in advance."),
