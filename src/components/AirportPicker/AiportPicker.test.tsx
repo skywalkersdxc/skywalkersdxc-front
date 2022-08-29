@@ -2,6 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import AirportPicker from "./AirportPicker";
 import userEvent from "@testing-library/user-event";
 
+const airportsOptions = [{name: "", label: ""}]
+
 describe("AiportPicker component", () => {
   afterEach(() => {
     jest.clearAllMocks()
@@ -15,6 +17,8 @@ describe("AiportPicker component", () => {
         }}
         fieldName="airport-picker-test"
         handleDataName={() => {}}
+        airportsOptions={airportsOptions}
+        handleFlightChange={() => {}}
       />
     );
     expect(screen.getByTestId("airport-picker-test")).toBeInTheDocument();
@@ -33,6 +37,9 @@ describe("Airport Component: Formik integration", () => {
 
     render(
       <AirportPicker
+        airportsOptions={airportsOptions}
+        handleFlightChange={() => {}}
+
         flightType="departure"
         formik={formik}
         fieldName="airport-picker-test"
@@ -59,6 +66,8 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
+            airportsOptions={airportsOptions}
+            handleFlightChange={() => {}}
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
@@ -85,6 +94,8 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
+            airportsOptions={airportsOptions}
+            handleFlightChange={() => {}}
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
@@ -104,6 +115,8 @@ describe("Airport Component: Formik integration", () => {
 
     render(
         <AirportPicker
+            airportsOptions={airportsOptions}
+            handleFlightChange={() => {}}
             flightType="departure"
             formik={formik}
             fieldName="airport-picker-test"
