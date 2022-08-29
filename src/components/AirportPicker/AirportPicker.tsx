@@ -1,10 +1,11 @@
 import {Alert, Autocomplete, FormControl, TextField, Grid } from "@mui/material";
 import { Place, AirplanemodeActive } from "@mui/icons-material";
-import React, { useEffect, useState} from "react";
-import { getData } from "./getData"
-import axios from "axios";
 import styles from "../../pages/HomePage/HomePage.module.css"
-import {Airport} from "../../intefaces/flights";
+
+interface options {
+  name: string;
+  label: string;
+}
 
 interface AirportPickerProps {
   flightType: string;
@@ -12,6 +13,8 @@ interface AirportPickerProps {
   fieldName: string;
   handleDataName: Function
   compact?: boolean;
+  airportsOptions: options[];
+  handleFlightChange: Function;
 }
 
 interface IconComponentProps {
@@ -23,30 +26,10 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
   flightType,
   fieldName,
   handleDataName,
-  compact
+  compact,
+  airportsOptions,
+  handleFlightChange
 }: AirportPickerProps) => {
-  const handleFlightChange = (flightInfo: string) => {
-    const { out } = getData({keyword: flightInfo});
-    const lowerCase = flightInfo.toLowerCase()
-
-    if(lowerCase === "lax" ){
-      formik.setFieldValue(fieldName, "LOS ANGELES, CA, LOS ANGELES INTL")
-      handleDataName({name: "LAX", type: fieldName})
-    } else {
-      formik.setFieldValue(fieldName, flightInfo)
-    }
-
-    if (compact) {
-      formik.setFieldValue(fieldName, formik.getFieldProps(fieldName).value)
-    }
-
-    out.then(res => {
-      setAirportsOptions(res.data);
-    }).catch(err => {
-      axios.isCancel(err);
-    });
-  };
-
   const IconComponent: React.FC<IconComponentProps> = ({ type }) => {
     switch (type) {
       case "departure":
@@ -66,18 +49,10 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
     }
   };
 
-  const [airportsOptions, setAirportsOptions] = useState([{name: "Loading ...", label: "Loading ..."}]);
-  const [isDisabled, setIsDisabled] = useState(false)
-
-  useEffect(() => {
-    handleFlightChange(formik.initialValues[fieldName])
-  }, []);
-
   const handleAutocomplete = (info: HTMLElement) => {
     const nameCode = airportsOptions.filter((item) => item.label === info.innerText)
     formik.setFieldValue(fieldName, nameCode[0].label)
     handleDataName({name: nameCode[0].name, type: fieldName})
-    setIsDisabled(true)
   }
 
   return (
@@ -95,7 +70,6 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
             disablePortal
             id="autocompleteSearch"
             data-testid="autocompleteSearch"
-            disabled={isDisabled}
             options={airportsOptions}
             onChange={(e: any) => handleAutocomplete(e.target)}
             value={formik.getFieldProps(fieldName).value}
@@ -104,7 +78,7 @@ const AirportPicker: React.FC<AirportPickerProps> = ({
                 <TextField
                 {...params}
                 label={selectLabel(flightType)}
-                onChange={(e: any) => handleFlightChange(e.target.value)}
+                onChange={(e: any) => handleFlightChange(e.target.value,fieldName, compact)}
                 onBlur={formik.getFieldProps(fieldName).onBlur}
                 value={formik.getFieldProps(fieldName).value}
                 name={formik.getFieldProps(fieldName).name}

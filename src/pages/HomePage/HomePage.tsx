@@ -13,13 +13,15 @@ import * as Yup from "yup";
 import { StyledEngineProvider } from "@mui/material/styles";
 import constants from "../../utils/constants";
 import moment, {Moment} from "moment";
-import { useReducer, useState} from "react";
+import { useReducer, useState, useEffect} from "react";
 import { searchFlight, transformFormData } from "../../logic/searchFlight";
 import { useFlightOffers } from "../../utils/flightsSearchContext";
 import { IFlightSearchStatus, IHomePageFormData, FlightResultsProps } from "./interfaces";
 import {Airport, IFlightOffers} from "../../intefaces/flights";
 import {CompactSearchForm} from "../../components/CompactSearchForm/CompactSearchForm";
 import { formReducer, FormState} from "../../utils/FormReducer";
+import { getData } from "../../components/AirportPicker/getData"
+import axios from "axios";
 
 function HomePage() {
   const today = moment()
@@ -36,6 +38,7 @@ function HomePage() {
     destinationFlight: "",
     departureFlight: ""
   })
+  const [airportsOptions, setAirportsOptions] = useState([{name: "Loading ...", label: "Loading ..."}]);
 
   const initialValues = {
     tripType: constants.tripType[0],
@@ -73,9 +76,11 @@ function HomePage() {
     initialValues,
     onSubmit: async (values) => {
       setFlightSearchStatus({isLoading: true});
-      values.departureFlight = codeValues.departureFlight
-      values.destinationFlight = codeValues.destinationFlight
-      const query = transformFormData(values);
+      const dataToTransform = {...values}
+      dataToTransform.departureFlight = codeValues.departureFlight
+      dataToTransform.destinationFlight = codeValues.destinationFlight
+      const query = transformFormData(dataToTransform);
+      
       try{
         const result = await searchFlight(query);
         setFlightSearchStatus({ isLoading: false });
@@ -90,8 +95,9 @@ function HomePage() {
         });
         setTimeout(() => {
           onClickHomeButton()
-        }, 2500)
+        }, 3500)
       }
+      
     },
     onReset: () => {
       setFlightOffers({} as IFlightOffers);
@@ -143,6 +149,37 @@ function HomePage() {
     dispatch({type: "arrivalDateChange", payload: newDate})
   }
 
+  useEffect(() => {
+    formik.setFieldValue("departureFlight", "LOS ANGELES, CA, LOS ANGELES INTL")
+    handleDataName({name: "LAX", type: "departureFlight"})
+    const { out } = getData({keyword: "a"});
+
+    out.then(res => {
+      setAirportsOptions(res.data);
+    }).catch(err => {
+      axios.isCancel(err);
+    });
+  }, []);
+
+  const handleFlightChange = (flightInfo: string, fieldName: string, compact?: boolean) => {   
+    const { out } = getData({keyword: flightInfo});
+    const isLetters = (str: string) => /^[A-Za-z]*$/.test(str);
+
+    if(isLetters(flightInfo)){
+      formik.setFieldValue(fieldName, flightInfo)
+
+      if (compact) {
+        formik.setFieldValue(fieldName, formik.getFieldProps(fieldName).value)
+      }
+  
+      out.then(res => {
+        setAirportsOptions(res.data);
+      }).catch(err => {
+        axios.isCancel(err);
+      });
+    }
+  };
+  
   return (
     <StyledEngineProvider injectFirst>
       <Container className={homePageStyles.container}>
@@ -193,6 +230,8 @@ function HomePage() {
                             dateArrivalDispatcher={arrivalDateChange}
                             dateDepartureDispatcher={departureDateChange}
                             formik={formik}
+                            airportsOptions={airportsOptions}
+                            handleFlightChange={handleFlightChange}
                         />
                         : <Grid
                             container
@@ -203,6 +242,8 @@ function HomePage() {
                         >
                           <Grid item xs={12} className={homePageStyles.flightPicker}>
                             <AirportPicker
+                                airportsOptions={airportsOptions}
+                                handleFlightChange={handleFlightChange}
                                 flightType="departure"
                                 formik={formik}
                                 fieldName="departureFlight"
@@ -211,6 +252,8 @@ function HomePage() {
                           </Grid>
                           <Grid item xs={12} className={homePageStyles.flightPicker}>
                             <AirportPicker
+                                airportsOptions={airportsOptions}
+                                handleFlightChange={handleFlightChange}
                                 flightType="destination"
                                 formik={formik}
                                 fieldName="destinationFlight"
