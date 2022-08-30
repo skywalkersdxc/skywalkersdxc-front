@@ -6,8 +6,9 @@ import FlightInfoComponent from "./FlightInfoComponent";
 import FlightDetailsModal from "../FlightDetails/FlightDetailsModal";
 
 type FlightCardProps = {
-    flightResults: FlightResultsProps,
-    showMode?: boolean
+    flightResults: FlightResultsProps;
+    showMode?: boolean;
+    onHomeButtonClick?:() => void;
 };
 
 /**
@@ -17,7 +18,7 @@ type FlightCardProps = {
  * passengers number data.
  * @constructor
  */
-const FlightCard: React.FC<FlightCardProps> = ({flightResults, showMode} : FlightCardProps) => {
+const FlightCard: React.FC<FlightCardProps> = ({onHomeButtonClick, flightResults, showMode} : FlightCardProps) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     let randomString = (Math.random() + 1).toString(36).substring(7);
@@ -27,7 +28,7 @@ const FlightCard: React.FC<FlightCardProps> = ({flightResults, showMode} : Fligh
         {
             !showMode ?
                 <Grid item xs={12} container flexDirection="row" className={flightCardStyles.amountContainer}>
-                    <FlightDetailsModal flightOffer={flightResults} open={open} setOpen={setOpen}/>
+                    <FlightDetailsModal flightOffer={flightResults} open={open} setOpen={setOpen} onHomeButtonClick={onHomeButtonClick} />
                     <Grid item xs={12}>
                         <hr className={flightCardStyles.dividerAmount}/>
                     </Grid>

@@ -314,7 +314,7 @@ function HomePage() {
           </Grid>
 
           <Grid item xs={12} md={7} container justifyContent="space-between">
-            {flightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item}/>)}
+            {flightOffers?.data?.map((item: FlightResultsProps) => <FlightCard key={item.id} flightResults={item} onHomeButtonClick={onClickHomeButton} />)}
           </Grid>
 
         </Grid>
