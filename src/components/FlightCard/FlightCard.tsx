@@ -42,7 +42,7 @@ const FlightCard: React.FC<FlightCardProps> = ({onHomeButtonClick, flightResults
                 <Grid container item xs={12}>
                     <Grid item container xs={12} alignItems={"center"}>
                         <Typography id="modal-modal-description">
-                            Passengers: {flightResults.passengers}
+                            Passengers: {flightResults?.travelerPricings?.length}
                         </Typography>
                     </Grid>
                 </Grid>
