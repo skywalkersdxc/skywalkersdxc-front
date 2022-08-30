@@ -5,7 +5,7 @@ import {airlineFailoverLogo} from "../FlightCard/FlightInfoComponent";
 import flightCardStyles from "../FlightCard/FlightCard.module.css";
 import {convertDate, timeTravelDiff} from "../../utils/utils";
 import moment from "moment";
-import {getAirlineByCodes, IAirlineInfo} from "../../services/FlightDetails.service";
+import {getAirlineByCodes} from "../../services/FlightDetails.service";
 import {buildMapOfCodes} from "../../utils/utils";
 
 type FlightItineraryInfoProps = {
@@ -14,7 +14,7 @@ type FlightItineraryInfoProps = {
 
 const FlightItineraryInfo: React.FC<FlightItineraryInfoProps> = ({flightOffer}: FlightItineraryInfoProps) => {
     const [airlines, setAirlines] = useState<Map<string, string> | null>(null);
-    const {passengers} = flightOffer;
+    const {travelerPricings} = flightOffer;
     const ItineraryTitle = ["OUTBOUND", "RETURN"];
 
     const involvedCarrierCodes: string[] = flightOffer.itineraries
@@ -78,7 +78,7 @@ const FlightItineraryInfo: React.FC<FlightItineraryInfoProps> = ({flightOffer}: 
                             </Grid>
                             <Grid item xs={1}>
                                 <Typography variant={"body2"} gutterBottom>
-                                    Passengers: {passengers}
+                                    Passengers: {travelerPricings?.length}
                                 </Typography>
                             </Grid>
                         </Grid>
