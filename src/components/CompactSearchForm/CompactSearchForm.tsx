@@ -7,6 +7,11 @@ import {IFlightSearchStatus} from "../../pages/HomePage/interfaces";
 import {FormState} from "../../utils/FormReducer";
 import constants from "../../utils/constants";
 
+interface options {
+    name: string;
+    label: string;
+  }
+
 interface Props {
     formik: any
     departureDispatcher: Function;
@@ -15,9 +20,22 @@ interface Props {
     dateArrivalDispatcher: Function;
     formState: FormState
     handleDataName: Function;
+    airportsOptions: options[];
+    handleFlightChange: Function;
 }
 
-export const CompactSearchForm = ({ formik, departureDispatcher, arrivalDispatcher, formState, dateDepartureDispatcher, dateArrivalDispatcher, handleDataName }: Props) => {
+export const CompactSearchForm = (
+    { 
+        formik, 
+        departureDispatcher, 
+        arrivalDispatcher, 
+        formState, 
+        dateDepartureDispatcher, 
+        dateArrivalDispatcher, 
+        handleDataName, 
+        airportsOptions,
+        handleFlightChange,
+    }: Props) => {
     const [flightSearchStatus, setFlightSearchStatus] = useState<IFlightSearchStatus>({isLoading: false});
 
     return (
@@ -30,6 +48,8 @@ export const CompactSearchForm = ({ formik, departureDispatcher, arrivalDispatch
                         formik={formik}
                         fieldName="departureFlight"
                         compact
+                        airportsOptions={airportsOptions}
+                        handleFlightChange={handleFlightChange}
                     />
 
                 </Grid>
@@ -40,6 +60,8 @@ export const CompactSearchForm = ({ formik, departureDispatcher, arrivalDispatch
                         formik={formik}
                         fieldName="destinationFlight"
                         compact
+                        airportsOptions={airportsOptions}
+                        handleFlightChange={handleFlightChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
