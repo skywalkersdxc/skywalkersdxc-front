@@ -12,9 +12,10 @@ type FlightDetailsProps = {
     flightOffer: FlightResultsProps,
     open: boolean
     setOpen: (val: boolean) => void;
+    onHomeButtonClick?: () => void;
 }
 
-const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, setOpen}) => {
+const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, setOpen, onHomeButtonClick}) => {
     const handleClose = () => setOpen(false);
 
     return (
@@ -30,7 +31,7 @@ const FlightDetailsModal: React.FC<FlightDetailsProps> = ({flightOffer, open, se
                     <Grid item xs={1}>
                         <Grid item container>
                             <Grid container item xs={2} alignItems={"center"}>
-                                <HomeButton />
+                                <HomeButton onClick={onHomeButtonClick} />
                             </Grid>
                             <Grid item container xs={7} alignItems={"center"}>
                                 <Typography id="modal-modal-description">
